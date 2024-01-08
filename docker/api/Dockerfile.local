@@ -24,4 +24,4 @@ RUN apk add --update --virtual .build-deps autoconf g++ make zlib-dev curl-dev \
   && echo -e "error_log = /var/log/php_errors.log" > /usr/local/etc/php/conf.d/error-logging.ini \
   && rm -rf /var/cache/apk/*
 
-WORKDIR /var/www/virtualstudy/api
+WORKDIR /var/www/skillup/api
