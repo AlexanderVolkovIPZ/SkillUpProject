@@ -1,0 +1,12 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    justify-self: center;
+    flex-grow: 1;
+}
+
+.loginFormWrapper{
+    padding: 15px;
+}
