@@ -4,7 +4,14 @@ import { BASE_URL } from "../utils/consts";
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL
+    baseUrl: BASE_URL,
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState()?.auth?.token;
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    }
   }),
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -25,7 +32,6 @@ export const userApi = createApi({
           errorMessage: "Помилка при логіні"
         };
       }
-
     }),
     registerUser: builder.mutation({
       query: (body) => {
@@ -34,6 +40,12 @@ export const userApi = createApi({
           method: "post",
           body
         };
+      }
+    }),
+    logout: builder.mutation({
+      query: () => ({}),
+      transformResponse (baseQueryReturnValue, meta, arg) {
+        localStorage.removeItem("token");
       }
     })
   })
