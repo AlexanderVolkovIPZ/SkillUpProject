@@ -1,14 +1,18 @@
-import { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+
+import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginScheme } from "../../schemesValidation/loginScheme";
 import { useLoginMutation } from "../../store/userApi";
-import {
-  Button, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField
-} from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 import s from "./LoginForm.module.css";
+import { responseStatus } from "../../utils/consts";
+import { AuthContext } from "../../context/authContext";
 
 export default function LoginForm () {
 
@@ -17,7 +21,9 @@ export default function LoginForm () {
   });
   const [login, { data, isSuccess, isError, error }] = useLoginMutation();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { setAuthenticated } = useContext(AuthContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -28,6 +34,10 @@ export default function LoginForm () {
     try {
       setLoading(true);
       const { data } = await login({ username, password });
+      if (data?.meta?.response?.status === responseStatus.HTTP_OK) {
+        setAuthenticated(true);
+        navigate("/");
+      }
     } catch (error) {
       console.log(error);
     } finally {
