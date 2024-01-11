@@ -1,2 +1,5 @@
 api_login:
-    path: /api/login
+  path: /api/login
+confirm_registration:
+  path: /api/confirm-registration/{token}
+  controller: App\Controller\RegistrationController::confirmRegistration

@@ -183,7 +183,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isConfirmed(): ?bool
+    public function getIsConfirmed(): ?bool
     {
         return $this->isConfirmed;
     }
