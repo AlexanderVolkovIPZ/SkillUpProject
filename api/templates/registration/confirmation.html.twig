@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+
+<title>Register</title>
+
+{% block body %}
+    <div class="alert alert-success" role="alert">
+        Registration successfully confirmed! If you want to log in, you can <a href="{{ app.request.server.get('REGISTRATION_CONFIRMATION_LINK')}}" class="alert-link">an example link</a> log in here.
+    </div>
+{% endblock %}
