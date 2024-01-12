@@ -6,11 +6,13 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\EntityListener\UserEntityListener;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Uid\UuidV4;
 use Symfony\Component\Uid\UuidV6;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ApiResource(
     collectionOperations: [
@@ -99,12 +101,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $registrationToken = null;
 
+    #[OneToMany(mappedBy: 'user', targetEntity: CourseUser::class)]
+    private Collection $courseUsers;
+
+    #[OneToMany(mappedBy: 'user', targetEntity: TaskUser::class)]
+    private Collection $taskUsers;
+
     public function __construct()
     {
         $uuid = UuidV6::v6();
         $this->id = $uuid->toRfc4122();
         $this->isConfirmed = false;
         $this->roles = [self::ROLE_USER];
+        $this->courseUsers = new ArrayCollection();
+        $this->taskUsers = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -205,6 +215,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->registrationToken = $registrationToken;
 
         return $this;
+    }
+
+    public function getCourseUsers(): Collection
+    {
+        return $this->courseUsers;
+    }
+
+    public function setCourseUsers(Collection $courseUsers): void
+    {
+        $this->courseUsers = $courseUsers;
+    }
+
+    public function getTaskUsers(): Collection
+    {
+        return $this->taskUsers;
+    }
+
+    public function setTaskUsers(Collection $taskUsers): void
+    {
+        $this->taskUsers = $taskUsers;
     }
 
 }
