@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -45,7 +45,7 @@ export default function LoginForm () {
     }
   };
 
-  return <form action="" className={s.form} onSubmit={handleSubmit(onSubmit)}>
+  return <form action="" className={s.formLogin} onSubmit={handleSubmit(onSubmit)}>
     <TextField
       id="username"
       label="Email"
