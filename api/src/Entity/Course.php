@@ -16,23 +16,23 @@ use Symfony\Component\Uid\UuidV6;
     collectionOperations: [
         "get"  => [
             "method"                => "GET",
-            "normalization_context" => ["groups" => ["get:collection:task"]],
+            "normalization_context" => ["groups" => ["get:collection:course"]],
         ],
         "post" => [
             "method"                  => "POST",
-            "denormalization_context" => ["groups" => ["post:collection:task"]],
-            "normalization_context"   => ["groups" => ["get:item:task"]]
+            "denormalization_context" => ["groups" => ["post:collection:course"]],
+            "normalization_context"   => ["groups" => ["get:item:course"]]
         ]
     ],
     itemOperations: [
         "get"    => [
             "method"                => "GET",
-            "normalization_context" => ["groups" => ["get:collection:task"]],
+            "normalization_context" => ["groups" => ["get:collection:course"]],
         ],
         "put"    => [
             "method"                  => "PUT",
-            "denormalization_context" => ["groups" => ["put:item:task"]],
-            "normalization_context"   => ["groups" => ["get:item:task"]],
+            "denormalization_context" => ["groups" => ["put:item:course"]],
+            "normalization_context"   => ["groups" => ["get:item:course"]],
         ],
         "delete" => [
             "method"   => "DELETE",
@@ -48,28 +48,28 @@ class Course
 
     #[ORM\Column(length: 255)]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:course",
+        "put:item:course",
+        "get:collection:course",
+        "get:item:course",
     ])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:course",
+        "put:item:course",
+        "get:collection:course",
+        "get:item:course",
     ])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:course",
+        "put:item:course",
+        "get:collection:course",
+        "get:item:course",
     ])]
     private ?string $description = null;
 

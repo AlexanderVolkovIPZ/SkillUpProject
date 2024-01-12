@@ -50,53 +50,53 @@ class Task
 
     #[ORM\Column(length: 255)]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:task",
+        "put:item:task",
+        "get:collection:task",
+        "get:item:task",
     ])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:task",
+        "put:item:task",
+        "get:collection:task",
+        "get:item:task",
     ])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:task",
+        "put:item:task",
+        "get:collection:task",
+        "get:item:task",
     ])]
     private ?string $fileNameTask = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     #[Groups([
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "get:collection:task",
+        "get:item:task",
     ])]
     private ?DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:task",
+        "put:item:task",
+        "get:collection:task",
+        "get:item:task",
     ])]
     private ?DateTimeInterface $dueDate = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:task",
+        "put:item:task",
+        "get:collection:task",
+        "get:item:task",
     ])]
     private ?string $maxMark = null;
 
@@ -105,10 +105,10 @@ class Task
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: "tasks")]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:task",
+        "put:item:task",
+        "get:collection:task",
+        "get:item:task",
     ])]
     private ?Course $course = null;
 

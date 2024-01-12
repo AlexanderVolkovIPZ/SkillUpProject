@@ -12,23 +12,23 @@ use Symfony\Component\Uid\UuidV6;
     collectionOperations: [
         "get"  => [
             "method"                => "GET",
-            "normalization_context" => ["groups" => ["get:collection:task"]],
+            "normalization_context" => ["groups" => ["get:collection:courseUser"]],
         ],
         "post" => [
             "method"                  => "POST",
-            "denormalization_context" => ["groups" => ["post:collection:task"]],
-            "normalization_context"   => ["groups" => ["get:item:task"]]
+            "denormalization_context" => ["groups" => ["post:collection:courseUser"]],
+            "normalization_context"   => ["groups" => ["get:item:courseUser"]]
         ]
     ],
     itemOperations: [
         "get"    => [
             "method"                => "GET",
-            "normalization_context" => ["groups" => ["get:collection:task"]],
+            "normalization_context" => ["groups" => ["get:collection:courseUser"]],
         ],
         "put"    => [
             "method"                  => "PUT",
-            "denormalization_context" => ["groups" => ["put:item:task"]],
-            "normalization_context"   => ["groups" => ["get:item:task"]],
+            "denormalization_context" => ["groups" => ["put:item:courseUser"]],
+            "normalization_context"   => ["groups" => ["get:item:courseUser"]],
         ],
         "delete" => [
             "method"   => "DELETE",
@@ -44,28 +44,28 @@ class CourseUser
 
     #[ORM\Column]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:courseUser",
+        "put:item:courseUser",
+        "get:collection:courseUser",
+        "get:item:courseUser",
     ])]
     private ?bool $isCreator = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "courseUsers")]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:courseUser",
+        "put:item:courseUser",
+        "get:collection:courseUser",
+        "get:item:courseUser",
     ])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: "courseUsers")]
     #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
+        "post:collection:courseUser",
+        "put:item:courseUser",
+        "get:collection:courseUser",
+        "get:item:courseUser",
     ])]
     private ?Course $course = null;
 
