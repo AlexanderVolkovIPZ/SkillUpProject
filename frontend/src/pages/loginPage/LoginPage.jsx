@@ -1,10 +1,7 @@
-import React from "react";
 import { Helmet } from "react-helmet";
 
 import LoginForm from "../../components/loginForm/LoginForm";
-
-import { Box } from "@mui/material";
-
+import { Box, Typography } from "@mui/material";
 import s from "./LoginPage.module.css";
 
 export default function LoginPage () {
@@ -13,8 +10,14 @@ export default function LoginPage () {
     <Helmet>
       <title>Login</title>
     </Helmet>
-    <div className={s.loginFormWrapper}>
-      <LoginForm />
+    <div className={s.contentWrapper}>
+      <div className={s.imgWrapper}>
+        <img src="/images/man-with-pc.png" alt="" className={s.loginImg} />
+      </div>
+      <div className={s.loginFormWrapper}>
+        <Typography variant="h3">Sign in</Typography>
+        <LoginForm />
+      </div>
     </div>
   </Box>;
 }

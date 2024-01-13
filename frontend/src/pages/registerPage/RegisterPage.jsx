@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 
 import RegisterForm from "../../components/registerForm/RegisterForm";
 
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import s from "./RegisterPage.module.css";
 
 export default function RegisterPage () {
@@ -12,6 +12,9 @@ export default function RegisterPage () {
     <Helmet>
       <title>Register</title>
     </Helmet>
-    <RegisterForm />
+    <div>
+      <Typography variant="h3">Sign up</Typography>
+      <RegisterForm />
+    </div>
   </Box>;
 }

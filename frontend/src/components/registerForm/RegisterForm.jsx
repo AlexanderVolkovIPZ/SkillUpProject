@@ -47,7 +47,7 @@ export default function RegisterForm () {
     event.preventDefault();
   };
 
-  return <form action="" className={s.form} onSubmit={handleSubmit(onSubmit)}>
+  return <form action="" className={s.formRegister} onSubmit={handleSubmit(onSubmit)}>
     <TextField
       id="firstName"
       label="Name"
