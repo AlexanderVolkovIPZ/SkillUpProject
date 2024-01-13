@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Typography, Link } from "@mui/material";
+import s from "./Footer.module.css";
 
 const Footer = () => {
   return (
@@ -9,8 +10,9 @@ const Footer = () => {
         backgroundColor: "#f8f8f8",
         padding: "20px",
         marginTop: "auto",
-        textAlign: "center",
+        textAlign: "center"
       }}
+      className={s.footer}
     >
       <Typography variant="body2" color="text.secondary">
         © {new Date().getFullYear()} Your Website Name
