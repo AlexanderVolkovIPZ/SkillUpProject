@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes, useLocation} from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { Suspense, useState } from "react";
 import { userRoutes } from "./routes/userRoutes";
 import { adminRoutes } from "./routes/adminRoutes";
@@ -12,12 +12,10 @@ import { AuthContext } from "./context/authContext";
 import CircularProgressModal from "./components/circularProgressModal/CircularProgressModal";
 
 function App () {
-
   const [authenticated, setAuthenticated] = useState(localStorage.getItem("token"));
 
   const routeRender = () => {
     if (!authenticated) {
-      /*console.log("Not auth!");*/
       return <Route path="/" element={<GuestLayout />}>
         {guestRoutes.map(({ element, path }, index) => (
           <Route key={path} path={path} element={element} />
@@ -52,8 +50,8 @@ function App () {
   };
 
   return (
-    <AuthContext.Provider value={{ setAuthenticated }}>
-      <Suspense fallback={<CircularProgressModal/>}>
+    <AuthContext.Provider value={{ setAuthenticated, userInfo: getJWTInfo() }}>
+      <Suspense fallback={<CircularProgressModal />}>
         <Routes>
           {routeRender()}
         </Routes>
