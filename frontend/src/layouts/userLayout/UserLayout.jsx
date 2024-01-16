@@ -15,5 +15,5 @@ export default function UserLayout () {
       </div>
     </div>
     <Footer />
-  </div>;
+  </div>
 }
