@@ -7,6 +7,7 @@ use App\Repository\CourseUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\UuidV6;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ApiResource(
     collectionOperations: [
@@ -31,13 +32,21 @@ use Symfony\Component\Uid\UuidV6;
             "normalization_context"   => ["groups" => ["get:item:courseUser"]],
         ],
         "delete" => [
-            "method"   => "DELETE",
+            "method" => "DELETE",
         ]
     ],
+)]
+#[UniqueEntity(
+    fields: [
+        'user',
+        'course'
+    ],
+    message: "This combination is already used."
 )]
 #[ORM\Entity(repositoryClass: CourseUserRepository::class)]
 class CourseUser
 {
+
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
     private ?string $id = null;
