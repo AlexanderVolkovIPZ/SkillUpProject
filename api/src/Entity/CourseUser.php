@@ -76,7 +76,7 @@ class CourseUser
         $this->isCreator = false;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -116,4 +116,25 @@ class CourseUser
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+    }
+
+    public function getCourse(): ?Course
+    {
+        return $this->course;
+    }
+
+    public function setCourse(?Course $course): void
+    {
+        $this->course = $course;
+    }
+
 }
