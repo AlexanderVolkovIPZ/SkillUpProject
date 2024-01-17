@@ -13,6 +13,7 @@ security:
     # used to reload user from session & other features (e.g. switch_user)
   firewalls:
     login:
+      pattern: ^/api/login
       stateless: true
       user_checker: App\Security\LoginChecker
       json_login:
@@ -26,7 +27,8 @@ security:
 
   access_control:
     - { path: ^/api/docs,  roles: PUBLIC_ACCESS }
-    - { path: ^/api/user,  roles: PUBLIC_ACCESS }
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
     - { path: ^/api/registration, roles: PUBLIC_ACCESS }
     - { path: ^/api/confirm-registration/.*$, roles: PUBLIC_ACCESS }
+    - { path: ^/api/user-courses,       roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
