@@ -6,7 +6,7 @@ export const userApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token = getState()?.auth?.token;
+      const token = localStorage.getItem("token");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -25,11 +25,9 @@ export const userApi = createApi({
         localStorage.setItem("token", response.token);
         return { ...response, meta };
       }, transformErrorResponse: (error) => {
-        console.error("Login error:", error);
-
         return {
           error: true,
-          errorMessage: "Помилка при логіні"
+          errorMessage: "Login error!"
         };
       }
     }),
@@ -40,12 +38,6 @@ export const userApi = createApi({
           method: "post",
           body
         };
-      }
-    }),
-    logout: builder.mutation({
-      query: () => ({}),
-      transformResponse (baseQueryReturnValue, meta, arg) {
-        localStorage.removeItem("token");
       }
     })
   })
