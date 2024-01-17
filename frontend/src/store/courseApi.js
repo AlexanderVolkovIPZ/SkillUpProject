@@ -6,7 +6,7 @@ export const courseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token = getState()?.auth?.token;
+     const token = localStorage.getItem('token')
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -14,6 +14,12 @@ export const courseApi = createApi({
     }
   }),
   endpoints: (builder) => ({
+    userCourses: builder.query({
+      query: () => ({
+        url: `/user-courses`,
+        method: "get"
+      })
+    }),
     create: builder.mutation({
       query: (body) => {
         return {
@@ -26,4 +32,4 @@ export const courseApi = createApi({
   })
 });
 
-export const { useCreateMutation } = courseApi;
+export const { useCreateMutation, useUserCoursesQuery } = courseApi;

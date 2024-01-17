@@ -6,7 +6,7 @@ export const courseUserApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token = getState()?.auth?.token;
+      const token = localStorage.getItem("token")
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
