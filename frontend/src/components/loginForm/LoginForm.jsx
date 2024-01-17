@@ -13,6 +13,7 @@ import { useLoginMutation } from "../../store/userApi";
 import s from "./LoginForm.module.css";
 import { responseStatus } from "../../utils/consts";
 import { AuthContext } from "../../context/authContext";
+import CircularProgressModal from "../circularProgressModal/CircularProgressModal";
 
 export default function LoginForm () {
 
@@ -45,44 +46,47 @@ export default function LoginForm () {
     }
   };
 
-  return <form action="" className={s.formLogin} onSubmit={handleSubmit(onSubmit)}>
-    <TextField
-      id="username"
-      label="Email"
-      variant="standard"
-      name="username"
-      type="email"
-      required={true}
-      inputProps={register("username")}
-      error={!!errors.email}
-      helperText={errors?.email?.message}
-    />
-    <FormControl variant="standard">
-      <InputLabel htmlFor="password">Password</InputLabel>
-      <Input
-        id="password"
-        type={showPassword ? "text" : "password"}
-        name="password"
-        {...register("password")}
-        autoComplete={"off"}
+  return <>
+    {loading?<CircularProgressModal/>:""}
+    <form action="" className={s.formLogin} onSubmit={handleSubmit(onSubmit)}>
+      <TextField
+        id="username"
+        label="Email"
+        variant="standard"
+        name="username"
+        type="email"
         required={true}
-        endAdornment={<InputAdornment position="end">
-          <IconButton
-            aria-label="toggle password visibility"
-            onClick={handleClickShowPassword}
-            onMouseDown={handleMouseDownPassword}
-            edge="end"
-          >
-            {showPassword ? <VisibilityOff /> : <Visibility />}
-          </IconButton>
-        </InputAdornment>}
-        label="Password"
-        error={!!errors.password}
-        helperText={errors?.password?.message}
+        inputProps={register("username")}
+        error={!!errors.email}
+        helperText={errors?.email?.message}
       />
-    </FormControl>
-    <Button type="submit" variant="contained" size="large">
-      Sign in
-    </Button>
-  </form>;
+      <FormControl variant="standard">
+        <InputLabel htmlFor="password">Password</InputLabel>
+        <Input
+          id="password"
+          type={showPassword ? "text" : "password"}
+          name="password"
+          {...register("password")}
+          autoComplete={"off"}
+          required={true}
+          endAdornment={<InputAdornment position="end">
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={handleClickShowPassword}
+              onMouseDown={handleMouseDownPassword}
+              edge="end"
+            >
+              {showPassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>}
+          label="Password"
+          error={!!errors.password}
+          helperText={errors?.password?.message}
+        />
+      </FormControl>
+      <Button type="submit" variant="contained" size="large">
+        Sign in
+      </Button>
+    </form>
+  </>
 }
