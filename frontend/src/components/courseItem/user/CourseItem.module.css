@@ -1,0 +1,56 @@
+.card {
+    max-width: 345px;
+    max-height: 340px;
+    width: 100%;
+    transition: box-shadow 0.5s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    position: relative;
+}
+
+.img {
+    filter: brightness(70%);;
+}
+
+.name {
+    top: 0;
+}
+
+.card:hover {
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+
+}
+
+.title {
+    top: 36px;
+}
+
+.name, .title {
+    position: absolute;
+    margin: 10px;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 95%;
+}
+
+.typographyContent {
+    flex-grow: 1;
+    margin: 5px 10px 0;
+    overflow: hidden;
+    max-height: 148px;
+    text-align: justify;
+}
+
+.wrapperWhiteContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+
+
