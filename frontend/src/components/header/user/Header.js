@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogoutMutation } from "../../../store/userApi";
 import { AuthContext } from "../../../context/authContext";
 
 import {
@@ -29,10 +28,9 @@ export default function Header () {
   const [anchorEl2, setAnchorEl2] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const navigate = useNavigate();
-  const [logout, { data, isSuccess, isError, error }] = useLogoutMutation();
 
-  const onHandleExit = async () => {
-    await logout();
+  const onHandleExit = () => {
+    localStorage.removeItem("token");
     setAuthenticated(false);
     navigate("/login");
   };

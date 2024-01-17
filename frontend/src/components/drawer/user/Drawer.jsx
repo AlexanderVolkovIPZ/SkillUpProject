@@ -50,7 +50,7 @@ export default function TemporaryDrawer () {
           </ListItemButton>
         </ListItem>
       </List>
-      <Divider />;
+      <Divider />
     </Box>
   );
   return (
