@@ -8,6 +8,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import SchoolIcon from "@mui/icons-material/School";
+import {Link} from "react-router-dom"
 import s from "./Drawer.module.css";
 
 export default function TemporaryDrawer () {
@@ -34,11 +35,11 @@ export default function TemporaryDrawer () {
 
       <List>
         <ListItem key={"Main page"} disablePadding>
-          <ListItemButton>
+          <ListItemButton component={Link} to={"/"}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary={"Main page"} />
+            <ListItemText primary={"Main page"}/>
           </ListItemButton>
         </ListItem>
         <ListItem key={"My courses"} disablePadding>
