@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CourseUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\UuidV6;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -44,7 +45,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: "This combination is already used."
 )]
 #[ORM\Entity(repositoryClass: CourseUserRepository::class)]
-class CourseUser
+class CourseUser implements JsonSerializable
 {
 
     #[ORM\Id]
@@ -90,36 +91,17 @@ class CourseUser
         return $this->id;
     }
 
-    public function getUserId(): ?string
+    public function setId(?string $id): void
     {
-        return $this->userId;
+        $this->id = $id;
     }
 
-    public function setUserId(string $userId): static
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    public function getCourseId(): ?string
-    {
-        return $this->courseId;
-    }
-
-    public function setCourseId(string $courseId): static
-    {
-        $this->courseId = $courseId;
-
-        return $this;
-    }
-
-    public function isIsCreator(): ?bool
+    public function getIsCreator(): ?bool
     {
         return $this->isCreator;
     }
 
-    public function setIsCreator(bool $isCreator): static
+    public function setIsCreator(bool $isCreator): self
     {
         $this->isCreator = $isCreator;
 
@@ -131,9 +113,11 @@ class CourseUser
         return $this->user;
     }
 
-    public function setUser(?User $user): void
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
     }
 
     public function getCourse(): ?Course
@@ -141,9 +125,19 @@ class CourseUser
         return $this->course;
     }
 
-    public function setCourse(?Course $course): void
+    public function setCourse(?Course $course): self
     {
         $this->course = $course;
+
+        return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            "id"        => $this->getId(),
+            "isCreator" => $this->getIsCreator(),
+        ];
     }
 
 }
