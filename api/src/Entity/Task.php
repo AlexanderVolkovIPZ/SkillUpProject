@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\UuidV6;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -37,15 +38,20 @@ use ApiPlatform\Core\Annotation\ApiResource;
             "normalization_context"   => ["groups" => ["get:item:task"]],
         ],
         "delete" => [
-            "method"   => "DELETE",
+            "method" => "DELETE",
         ]
     ],
 )]
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
-class Task
+class Task implements JsonSerializable
 {
+
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
+    #[Groups([
+        "get:collection:task",
+        "get:item:task",
+    ])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
@@ -75,22 +81,6 @@ class Task
     ])]
     private ?string $fileNameTask = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    #[Groups([
-        "get:collection:task",
-        "get:item:task",
-    ])]
-    private ?DateTimeInterface $createdAt = null;
-
-    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    #[Groups([
-        "post:collection:task",
-        "put:item:task",
-        "get:collection:task",
-        "get:item:task",
-    ])]
-    private ?DateTimeInterface $dueDate = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     #[Groups([
         "post:collection:task",
@@ -99,6 +89,22 @@ class Task
         "get:item:task",
     ])]
     private ?string $maxMark = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups([
+        "get:collection:task",
+        "get:item:task",
+    ])]
+    private ?DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups([
+        "post:collection:task",
+        "put:item:task",
+        "get:collection:task",
+        "get:item:task",
+    ])]
+    private ?DateTimeInterface $dueDate = null;
 
     #[OneToMany(mappedBy: 'task', targetEntity: TaskUser::class)]
     private Collection $taskUsers;
@@ -121,9 +127,16 @@ class Task
         $this->maxMark = 0;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(?string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -131,7 +144,7 @@ class Task
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -143,7 +156,7 @@ class Task
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -155,43 +168,31 @@ class Task
         return $this->fileNameTask;
     }
 
-    public function setFileNameTask(?string $fileNameTask): static
+    public function setFileNameTask(?string $fileNameTask): self
     {
         $this->fileNameTask = $fileNameTask;
 
         return $this;
     }
 
-    public function getCourseId(): ?string
-    {
-        return $this->courseId;
-    }
-
-    public function setCourseId(string $courseId): static
-    {
-        $this->courseId = $courseId;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getDueDate(): ?\DateTimeInterface
+    public function getDueDate(): ?DateTimeInterface
     {
         return $this->dueDate;
     }
 
-    public function setDueDate(?\DateTimeInterface $dueDate): static
+    public function setDueDate(?DateTimeInterface $dueDate): self
     {
         $this->dueDate = $dueDate;
 
@@ -203,9 +204,11 @@ class Task
         return $this->taskUsers;
     }
 
-    public function setTaskUsers(Collection $taskUsers): void
+    public function setTaskUsers(Collection $taskUsers): self
     {
         $this->taskUsers = $taskUsers;
+
+        return $this;
     }
 
     public function getMaxMark(): ?string
@@ -213,11 +216,36 @@ class Task
         return $this->maxMark;
     }
 
-    public function setMaxMark(string $maxMark): static
+    public function setMaxMark(string $maxMark): self
     {
         $this->maxMark = $maxMark;
 
         return $this;
+    }
+
+    public function getCourse(): ?Course
+    {
+        return $this->course;
+    }
+
+    public function setCourse(?Course $course): self
+    {
+        $this->course = $course;
+
+        return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            "id"           => $this->getId(),
+            "name"         => $this->getName(),
+            "description"  => $this->getDescription(),
+            "fileNameTask" => $this->getFileNameTask(),
+            "maxMark"      => $this->getMaxMark(),
+            "createdAt"    => $this->getCreatedAt(),
+            "dueDate"      => $this->getDueDate()
+        ];
     }
 
 }

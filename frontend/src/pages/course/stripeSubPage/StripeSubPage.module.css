@@ -1,0 +1,57 @@
+.card {
+
+}
+
+.cardMedia {
+    max-height: 200px;
+    border-radius: 10px;
+    height: 100%;
+    filter: brightness(70%);;
+}
+
+.cardContent {
+    display: flex;
+    gap: 15px;
+    flex-grow: 4;
+}
+
+.leftSide {
+    min-width: 180px;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 70px;
+}
+
+.rightSide {
+    flex-grow: 1;
+    width: 100%;
+}
+
+s.menu {
+
+}
+
+.leftSideTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.leftSideBottom {
+    font-size: 18px;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.listTask {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    max-width: 754px;
+}

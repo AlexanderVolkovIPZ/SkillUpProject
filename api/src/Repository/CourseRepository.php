@@ -16,6 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CourseRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Course::class);
@@ -26,7 +27,7 @@ class CourseRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $qb = $entityManager->createQueryBuilder();
 
-        $qb->select('c.id', 'c.name', 'c.title', 'c.description')
+        $qb->select('c.id', 'c.name', 'c.title', 'c.description', 'c.code')
             ->from('App\Entity\Course', 'c')
             ->leftJoin('App\Entity\CourseUser', 'cu', 'WITH', 'c.id = cu.course')
             ->where('cu.user = :userId')

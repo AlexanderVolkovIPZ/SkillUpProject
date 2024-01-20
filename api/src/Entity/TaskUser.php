@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\EntityListener\TaskUserEntityListener;
 use App\Repository\TaskUserRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\UuidV6;
 
@@ -32,34 +35,18 @@ use Symfony\Component\Uid\UuidV6;
             "normalization_context"   => ["groups" => ["get:item:taskUser"]],
         ],
         "delete" => [
-            "method"   => "DELETE",
+            "method" => "DELETE",
         ]
     ],
 )]
+#[ORM\EntityListeners([TaskUserEntityListener::class])]
 #[ORM\Entity(repositoryClass: TaskUserRepository::class)]
-class TaskUser
+class TaskUser implements JsonSerializable
 {
+
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
     private ?string $id = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
-    ])]
-    private ?string $taskId = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups([
-        "post:collection:taskUser",
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
-    ])]
-    private ?string $userId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
@@ -95,8 +82,16 @@ class TaskUser
     ])]
     private ?string $mark = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups([
+        "get:collection:taskUser",
+        "get:item:taskUser",
+    ])]
+    private ?DateTimeInterface $date = null;
+
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "taskUsers")]
     #[Groups([
+        "post:collection:taskUser",
         "put:item:taskUser",
         "get:collection:taskUser",
         "get:item:taskUser",
@@ -105,6 +100,7 @@ class TaskUser
 
     #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: "taskUsers")]
     #[Groups([
+        "post:collection:taskUser",
         "put:item:taskUser",
         "get:collection:taskUser",
         "get:item:taskUser",
@@ -119,31 +115,14 @@ class TaskUser
         $this->mark = 0;
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
-    public function getTaskId(): ?string
+    public function setId(?string $id): self
     {
-        return $this->taskId;
-    }
-
-    public function setTaskId(string $taskId): static
-    {
-        $this->taskId = $taskId;
-
-        return $this;
-    }
-
-    public function getUserId(): ?string
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(string $userId): static
-    {
-        $this->userId = $userId;
+        $this->id = $id;
 
         return $this;
     }
@@ -153,7 +132,7 @@ class TaskUser
         return $this->solvedTaskFileName;
     }
 
-    public function setSolvedTaskFileName(?string $solvedTaskFileName): static
+    public function setSolvedTaskFileName(?string $solvedTaskFileName): self
     {
         $this->solvedTaskFileName = $solvedTaskFileName;
 
@@ -165,19 +144,19 @@ class TaskUser
         return $this->descriptionSolvedTask;
     }
 
-    public function setDescriptionSolvedTask(?string $descriptionSolvedTask): static
+    public function setDescriptionSolvedTask(?string $descriptionSolvedTask): self
     {
         $this->descriptionSolvedTask = $descriptionSolvedTask;
 
         return $this;
     }
 
-    public function isIsDone(): ?bool
+    public function getIsDone(): ?bool
     {
         return $this->isDone;
     }
 
-    public function setIsDone(bool $isDone): static
+    public function setIsDone(bool $isDone): self
     {
         $this->isDone = $isDone;
 
@@ -189,10 +168,59 @@ class TaskUser
         return $this->mark;
     }
 
-    public function setMark(string $mark): static
+    public function setMark(string $mark): self
     {
         $this->mark = $mark;
 
         return $this;
     }
+
+    public function getTask(): ?Task
+    {
+        return $this->task;
+    }
+
+    public function setTask(?Task $task): self
+    {
+        $this->task = $task;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDate(): ?DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+
+    public function jsonSerialize(): array
+    {
+        return [
+            "id"                    => $this->getId(),
+            "solvedTaskFileName"    => $this->getSolvedTaskFileName(),
+            "descriptionSolvedTask" => $this->getDescriptionSolvedTask(),
+            "isDone"                => $this->getIsDone(),
+            "mark"                  => $this->getMark()
+        ];
+    }
+
 }
