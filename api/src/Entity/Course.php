@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\EntityListener\CourseEntityListener;
 use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\UuidV6;
 
@@ -35,15 +37,23 @@ use Symfony\Component\Uid\UuidV6;
             "normalization_context"   => ["groups" => ["get:item:course"]],
         ],
         "delete" => [
-            "method"   => "DELETE",
+            "method" => "DELETE",
         ]
     ],
 )]
+#[ORM\EntityListeners([CourseEntityListener::class])]
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
-class Course
+class Course implements JsonSerializable
 {
+
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
+    #[Groups([
+        "post:collection:course",
+        "put:item:course",
+        "get:collection:course",
+        "get:item:course",
+    ])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
@@ -73,6 +83,14 @@ class Course
     ])]
     private ?string $description = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups([
+        "put:item:course",
+        "get:collection:course",
+        "get:item:course",
+    ])]
+    private ?string $code = null;
+
     #[OneToMany(mappedBy: 'course', targetEntity: CourseUser::class)]
     private Collection $courseUsers;
 
@@ -90,6 +108,11 @@ class Course
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
     }
 
     public function getName(): ?string
@@ -146,6 +169,29 @@ class Course
     public function setTasks(Collection $tasks): void
     {
         $this->tasks = $tasks;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            "id"          => $this->getId(),
+            "name"        => $this->getName(),
+            "title"       => $this->getTitle(),
+            "description" => $this->getDescription(),
+            "code"        => $this->getCode(),
+        ];
     }
 
 }
