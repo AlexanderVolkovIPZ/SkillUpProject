@@ -7,6 +7,7 @@ use App\EntityListener\UserEntityListener;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
+use JsonSerializable;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -37,15 +38,16 @@ use Doctrine\Common\Collections\Collection;
             "normalization_context"   => ["groups" => ["get:item:user"]],
         ],
         "delete" => [
-            "method"   => "DELETE",
+            "method" => "DELETE",
         ]
     ],
 )]
 #[ORM\EntityListeners([UserEntityListener::class])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSerializable
 {
+
     const ROLE_USER  = "ROLE_USER";
     const ROLE_ADMIN = "ROLE_ADMIN";
 
@@ -222,9 +224,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->courseUsers;
     }
 
-    public function setCourseUsers(Collection $courseUsers): void
+    public function setCourseUsers(Collection $courseUsers): self
     {
         $this->courseUsers = $courseUsers;
+
+        return $this;
     }
 
     public function getTaskUsers(): Collection
@@ -232,9 +236,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->taskUsers;
     }
 
-    public function setTaskUsers(Collection $taskUsers): void
+    public function setTaskUsers(Collection $taskUsers): self
     {
         $this->taskUsers = $taskUsers;
+
+        return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            "id"          => $this->getId(),
+            "email"       => $this->getEmail(),
+            "firstName"   => $this->getFirstName(),
+            "lastName"    => $this->getLastName(),
+            "isConfirmed" => $this->getIsConfirmed()
+        ];
     }
 
 }
