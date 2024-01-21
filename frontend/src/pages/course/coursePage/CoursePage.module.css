@@ -3,7 +3,9 @@
 }
 
 .contentBox{
-    background-color: lightgray;
     max-width: 1000px;
     margin: 10px auto 0;
+}
+
+.coursePageWrapper{
 }
