@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet";
 import ConnectCourseForm from "../../../components/connectCourseForm/user/ConnectCourseForm";
-import s from "./ConnectCoursePage.module.css";
 import { Typography } from "@mui/material";
+import s from "./ConnectCoursePage.module.css";
 
 export default function ConnectCoursePage () {
 

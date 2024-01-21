@@ -22,7 +22,7 @@ export default function TaskItem ({ name, createdAt, id, handleListItemClick, in
         </div>
         <div>
           <Typography variant="overline" display="block" className={s.date}>
-            {createdAt?.date}
+            {createdAt?.date.split(".")[0]}
           </Typography>
         </div>
       </ListItem>

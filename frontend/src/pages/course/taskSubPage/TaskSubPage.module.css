@@ -1,0 +1,58 @@
+.card {
+
+}
+
+.accordion {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.accordionSummary {
+    transition: background-color 0.1s ease-in;
+}
+
+.name {
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 2.1;
+}
+
+.date {
+    font-size: 13px;
+}
+
+.accordionSummary:hover {
+    background-color: whitesmoke;
+}
+
+.accordionDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid lightgray;
+}
+
+.taskStatusesWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 20px;
+}
+
+.countSubmittedTasks, .countAppointedTasks {
+    text-align: center;
+}
+
+.button {
+    max-width: 150px;
+}

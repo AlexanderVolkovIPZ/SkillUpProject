@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 import { useCourseQuery, useUpdateCourseMutation } from "../../../store/courseApi";
-import { useGetTasksByCourseQuery } from "../../../store/taksApi";
+import { useGetTasksByCourseQuery } from "../../../store/taskApi";
 
 import {
   Box,
@@ -16,17 +16,16 @@ import {
   Typography
 } from "@mui/material";
 import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReplayIcon from "@mui/icons-material/Replay";
 import List from "@mui/material/List";
 import TaskItem from "../../../components/taskItem/user/TaskItem";
 import CircularProgressModal from "../../../components/circularProgressModal/CircularProgressModal";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { Cloud, ContentCopy, ContentPaste } from "@mui/icons-material";
+import { ContentCopy } from "@mui/icons-material";
 import s from "./StripeSubPage.module.css";
 
-export default function StripeSubPage () {
+export default function StripeSubPage ({ setValueTab }) {
   const { id } = useParams();
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -34,6 +33,10 @@ export default function StripeSubPage () {
   const { data: taskData, isLoading: isLoadingTask } = useGetTasksByCourseQuery(id);
   const [updateCourse] = useUpdateCourseMutation();
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    setValueTab("1");
+  }, []);
 
   const onCopy = () => {
     if (courseData?.code) {

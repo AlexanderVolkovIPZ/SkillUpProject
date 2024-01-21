@@ -14,7 +14,7 @@ export default function CoursePage () {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  return <div>
+  return <div className={s.coursePageWrapper}>
     <Box sx={{ width: "100%" }} className={s.tabBox}>
       <Tabs
         value={value}
@@ -31,10 +31,10 @@ export default function CoursePage () {
     </Box>
     <div className={s.contentBox}>
       <Routes path={`/courses/${id}`}>
-        <Route index element={<StripeSubPage />} />
-        <Route path={"tasks"} element={<TaskSubPage />} />
-        <Route path={"users"} element={<UserSubPage />} />
-        <Route path={"marks"} element={<MarkSubPage />} />
+        <Route index element={<StripeSubPage setValueTab={setValue}/>} />
+        <Route path={"tasks"} element={<TaskSubPage setValueTab={setValue}/>} />
+        <Route path={"users"} element={<UserSubPage setValueTab={setValue}/>} />
+        <Route path={"marks"} element={<MarkSubPage setValueTab={setValue}/>} />
       </Routes>
     </div>
   </div>;
