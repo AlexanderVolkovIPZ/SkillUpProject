@@ -33,6 +33,7 @@ security:
     - { path: ^/api/tasks,  roles: PUBLIC_ACCESS }
     - { path: ^/api/tasks/.*$,  roles: PUBLIC_ACCESS }
     - { path: ^/api/courses/.*$,  roles: PUBLIC_ACCESS }
+    - { path: ^/api/task-create,  roles: PUBLIC_ACCESS }
     - { path: ^/api/tasks-by-course/.*$,  roles: PUBLIC_ACCESS }
     - { path: ^/api/task_users,  roles: PUBLIC_ACCESS }
     - { path: ^/api/registration, roles: PUBLIC_ACCESS }
