@@ -10,8 +10,17 @@ import AdminLayout from "./layouts/adminLayout/AdminLayout";
 import { getJWTInfo } from "./utils/getJWTInfo";
 import { AuthContext } from "./context/authContext";
 import CircularProgressModal from "./components/circularProgressModal/CircularProgressModal";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 function App () {
+  dayjs.tz.setDefault("Europe/Kiev");
   const [authenticated, setAuthenticated] = useState(localStorage.getItem("token"));
 
   const routeRender = () => {
@@ -50,13 +59,15 @@ function App () {
   };
 
   return (
-    <AuthContext.Provider value={{ setAuthenticated, userInfo: getJWTInfo() }}>
-      <Suspense fallback={<CircularProgressModal />}>
-        <Routes>
-          {routeRender()}
-        </Routes>
-      </Suspense>
-    </AuthContext.Provider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <AuthContext.Provider value={{ setAuthenticated, userInfo: getJWTInfo() }}>
+        <Suspense fallback={<CircularProgressModal />}>
+          <Routes>
+            {routeRender()}
+          </Routes>
+        </Suspense>
+      </AuthContext.Provider>
+    </LocalizationProvider>
   );
 }
 
