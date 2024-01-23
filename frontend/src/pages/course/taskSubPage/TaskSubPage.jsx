@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 
 import { useGetTasksByCourseQuery } from "../../../store/taskApi";
 import { useGetTaskUserQuery } from "../../../store/taskUserApi";
+import { useGetCourseUsersQuery } from "../../../store/courseUserApi";
 
 import {
   Accordion,
@@ -23,30 +24,41 @@ export default function TaskSubPage ({ setValueTab }) {
   const { id } = useParams();
   const { data: taskData, isLoading: isLoadingTask } = useGetTasksByCourseQuery(id);
   const { data: taskUserData, isLoading: isLoadingUserData } = useGetTaskUserQuery();
+  const { data: courseUserData, isLoading: isLoadingCourseUserData } = useGetCourseUsersQuery();
+
   const [taskStatistic, setTaskStatistic] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    if (taskUserData) {
+    if (taskUserData && courseUserData) {
+
       const taskCounts = taskUserData["hydra:member"].reduce((counts, task) => {
+        console.log(task)
         const isDone = task?.isDone;
         const taskId = task.task.split("/").pop();
 
         if (!counts[taskId]) {
-          counts[taskId] = { done: 0, notDone: 0 };
+          counts[taskId] = { done: 0, all: 0 };
         }
 
         if (isDone) {
           counts[taskId].done += 1;
-        } else {
-          counts[taskId].notDone += 1;
         }
-
         return counts;
       }, {});
 
+      taskCounts.all =  courseUserData["hydra:member"].reduce((counter,item)=>{
+        if(item.course ===`/api/courses/${id}`&&!item.isCreator){
+          counter+=1
+        }
+        return counter;
+      },0)
+
       setTaskStatistic(taskCounts);
     }
+
+
+
   }, [taskUserData]);
 
   useEffect(() => {
@@ -93,7 +105,7 @@ export default function TaskSubPage ({ setValueTab }) {
                   <Typography variant="title1">Submitted</Typography>
                 </div>
                 <div>
-                  <Typography className={s.countAppointedTasks} variant="h4">{taskStatistic[id] ? taskStatistic[id]?.done + taskStatistic[id]?.notDone : 0}</Typography>
+                  <Typography className={s.countAppointedTasks} variant="h4">{taskStatistic[id] ? taskStatistic[id]?.all : 0}</Typography>
                   <Typography variant="title1">Appointed</Typography>
                 </div>
               </Box>
@@ -102,6 +114,6 @@ export default function TaskSubPage ({ setValueTab }) {
         })}
       </CardContent>
     </Card>}
-    <CreateTaskDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
+    <CreateTaskDialog openDialog={openDialog} setOpenDialog={setOpenDialog} courseId = {id}/>
   </>;
 }
