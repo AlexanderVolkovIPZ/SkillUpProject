@@ -23,8 +23,13 @@ export const courseUserApi = createApi({
         };
       }
     }),
-
+    getCourseUsers: builder.query({
+      query: () => ({
+        url: `/course_users`,
+        method: "get"
+      })
+    })
   })
 });
 
-export const { useCreateMutation } = courseUserApi;
+export const { useCreateMutation, useGetCourseUsersQuery } = courseUserApi;
