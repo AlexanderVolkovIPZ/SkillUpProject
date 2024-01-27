@@ -25,11 +25,17 @@ export const taskApi = createApi({
         return {
           url: "/task-create",
           method: "post",
-          body,
+          body
         };
       }
+    }),
+    getTask: builder.query({
+      query: (id) => ({
+        url: `/tasks/${id}`,
+        method: "get"
+      })
     }),
   })
 });
 
-export const { useGetTasksByCourseQuery, useCreateMutation } = taskApi;
+export const { useGetTasksByCourseQuery, useCreateMutation, useGetTaskQuery, useGetTaskFileQuery} = taskApi;
