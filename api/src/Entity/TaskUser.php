@@ -57,24 +57,16 @@ class TaskUser implements JsonSerializable
     ])]
     private ?string $solvedTaskFileName = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         "post:collection:taskUser",
         "put:item:taskUser",
         "get:collection:taskUser",
         "get:item:taskUser",
     ])]
-    private ?string $descriptionSolvedTask = null;
+    private ?string $linkSolvedTask = null;
 
-    #[ORM\Column]
-    #[Groups([
-        "put:item:taskUser",
-        "get:collection:taskUser",
-        "get:item:taskUser",
-    ])]
-    private ?bool $isDone = null;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Groups([
         "put:item:taskUser",
         "get:collection:taskUser",
@@ -111,8 +103,7 @@ class TaskUser implements JsonSerializable
     {
         $uuid = UuidV6::v6();
         $this->id = $uuid->toRfc4122();
-        $this->isDone = false;
-        $this->mark = 0;
+        $this->mark = null;
     }
 
     public function getId(): ?string
@@ -139,26 +130,14 @@ class TaskUser implements JsonSerializable
         return $this;
     }
 
-    public function getDescriptionSolvedTask(): ?string
+    public function getLinkSolvedTask(): ?string
     {
-        return $this->descriptionSolvedTask;
+        return $this->linkSolvedTask;
     }
 
-    public function setDescriptionSolvedTask(?string $descriptionSolvedTask): self
+    public function setLinkSolvedTask(?string $linkSolvedTask): self
     {
-        $this->descriptionSolvedTask = $descriptionSolvedTask;
-
-        return $this;
-    }
-
-    public function getIsDone(): ?bool
-    {
-        return $this->isDone;
-    }
-
-    public function setIsDone(bool $isDone): self
-    {
-        $this->isDone = $isDone;
+        $this->linkSolvedTask = $linkSolvedTask;
 
         return $this;
     }
@@ -215,11 +194,10 @@ class TaskUser implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            "id"                    => $this->getId(),
-            "solvedTaskFileName"    => $this->getSolvedTaskFileName(),
-            "descriptionSolvedTask" => $this->getDescriptionSolvedTask(),
-            "isDone"                => $this->getIsDone(),
-            "mark"                  => $this->getMark()
+            "id"                 => $this->getId(),
+            "solvedTaskFileName" => $this->getSolvedTaskFileName(),
+            "linkSolvedTask"     => $this->getLinkSolvedTask(),
+            "mark"               => $this->getMark()
         ];
     }
 
