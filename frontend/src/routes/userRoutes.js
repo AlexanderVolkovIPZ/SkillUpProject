@@ -1,5 +1,6 @@
 import { guestRoutes } from "./guestRoutes";
 import { lazy } from "react";
+import TaskPage from "../pages/task/taskPage/user/TaskPage";
 
 const CreateCoursePage = lazy(() => import("../pages/course/createPage/CreateCoursePage"));
 const ConnectCoursePage = lazy(() => import("../pages/course/connectPage/ConnectCoursePage"));
@@ -22,5 +23,9 @@ export const userRoutes = [
   {
     path: "/course/:id/*",
     element: <CoursePage />
+  },
+  {
+    path:"/task/:taskId",
+    element: <TaskPage/>
   }
 ].concat(guestRoutes);
