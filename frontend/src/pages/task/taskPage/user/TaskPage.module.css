@@ -1,0 +1,98 @@
+.taskBox {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 20px;
+}
+
+.leftSide {
+    flex-grow: 1;
+    display: flex;
+    column-gap: 10px;
+}
+
+.boxInfo {
+    flex-grow: 2;
+}
+
+
+.boxDescription {
+    margin-top: 10px;
+}
+
+.boxFileContent {
+    margin-top: 10px;
+}
+
+
+.date {
+    color: #3b4151;
+}
+
+.descriptionLbl {
+    /*  margin-top: 10px;*/
+}
+
+.descriptionBoxIconLabel, .filesBoxIconLabel {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.rightSide {
+    flex-grow: 1;
+    max-width: 300px;
+}
+
+.yourWork {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 10px;
+}
+
+.fileNameBoxAttachTask, .linkBoxAttachTask {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+    border-radius: 10px;
+}
+
+.fileNameWithIcon, .linkWithIcon {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    margin-left: 5px;
+}
+
+.fileName, .linkName {
+    max-width: 165px;
+    flex-grow: 2;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.itemTaskSubmitted {
+    min-height: 48px;
+}
+
+.titleAttachTask {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.statusLabel {
+    font-size: 14px;
+    font-weight: bolder;
+    color: #6b6b6b;
+}

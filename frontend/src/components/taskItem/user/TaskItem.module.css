@@ -19,3 +19,9 @@
 .date {
     font-size: 13px;
 }
+
+.listItemAvatarName {
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+}

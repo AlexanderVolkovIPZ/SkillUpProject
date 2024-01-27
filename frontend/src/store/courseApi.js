@@ -47,6 +47,12 @@ export const courseApi = createApi({
         method: "put",
         body: newData
       })
+    }),
+    isCurrentUserCourseCreator: builder.query({
+      query: (id) => ({
+        url: `/user-course-creator/${id}`,
+        method: "get"
+      })
     })
   })
 });
@@ -56,5 +62,6 @@ export const {
   useUserCoursesQuery,
   useUserCourseByCodeQuery,
   useCourseQuery,
-  useUpdateCourseMutation
+  useUpdateCourseMutation,
+  useIsCurrentUserCourseCreatorQuery
 } = courseApi;

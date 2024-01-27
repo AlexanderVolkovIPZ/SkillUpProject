@@ -28,7 +28,7 @@ export const courseUserApi = createApi({
         url: `/course_users`,
         method: "get"
       })
-    })
+    }),
   })
 });
 

@@ -1,0 +1,16 @@
+.popupMenu {
+
+}
+
+.formAttachTask {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 10px;
+}
+
+.buttonGroup {
+    margin-top: 20px;
+}
+
+

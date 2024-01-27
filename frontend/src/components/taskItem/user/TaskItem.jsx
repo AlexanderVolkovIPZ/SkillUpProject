@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { Typography } from "@mui/material";
+import { Avatar, Typography } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItem from "@mui/material/ListItem";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import { deepOrange } from "@mui/material/colors";
 import s from "./TaskItem.module.css";
 
 export default function TaskItem ({ name, createdAt, id, handleListItemClick, index, selectedIndex }) {
@@ -15,7 +17,10 @@ export default function TaskItem ({ name, createdAt, id, handleListItemClick, in
       to={`/task/${id}`}
     >
       <ListItem className={s.listItem}>
-        <div>
+        <div className={s.listItemAvatarName}>
+          <Avatar sx={{ bgcolor: deepOrange[500] }}>
+            <AssignmentIcon />
+          </Avatar>
           <Typography variant="title1" display="block" className={s.name}>
             {name}
           </Typography>
