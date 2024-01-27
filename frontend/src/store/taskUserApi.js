@@ -18,9 +18,30 @@ export const taskUserApi = createApi({
       query: () => ({
         url: `/task_users`,
         method: "get"
-      })
+      }),
+      providesTags: ["Post"]
+    }),
+    createTaskUser: builder.mutation({
+      query: (body) => {
+        return {
+          url: "/task-user-create",
+          method: "post",
+          body
+        };
+      },
+      invalidatesTags: ["Post"]
+    }),
+    deleteTaskUser: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/task-user-delete/${id}`,
+          method: "delete"
+        };
+      },
+      invalidatesTags: ["Post"]
     })
+
   })
 });
 
-export const { useGetTaskUserQuery } = taskUserApi;
+export const { useGetTaskUserQuery, useCreateTaskUserMutation, useDeleteTaskUserMutation } = taskUserApi;
