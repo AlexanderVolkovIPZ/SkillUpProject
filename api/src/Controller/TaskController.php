@@ -10,8 +10,11 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -80,6 +83,21 @@ class TaskController extends AbstractController
         $this->entityManager->flush();
 
         return new JsonResponse("Task created successfully", Response::HTTP_OK);
+    }
+
+    #[Route("/api/task-file/{name}", name: "task_file_by_name", methods: ["GET"])]
+    public function taskFileByName(string $name): BinaryFileResponse
+    {
+        $filePath = $this->getParameter('upload_directory') . '/' . $name;
+
+        if (!file_exists($filePath)) {
+            throw new FileNotFoundException($name);
+        }
+
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $name);
+
+        return $response;
     }
 
 }
