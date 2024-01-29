@@ -9,7 +9,7 @@ import { useGetCourseUsersQuery } from "../../../store/courseUserApi";
 import {
   Accordion,
   AccordionDetails,
-  AccordionSummary, Box, Button,
+  AccordionSummary, Avatar, Box, Button,
   Card,
   CardContent,
   Typography
@@ -18,6 +18,8 @@ import CreateTaskDialog from "../../../components/createTaskDialog/user/CreateTa
 import CircularProgressModal from "../../../components/circularProgressModal/CircularProgressModal";
 import AddIcon from "@mui/icons-material/Add";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import { deepOrange } from "@mui/material/colors";
 import s from "./TaskSubPage.module.css";
 
 export default function TaskSubPage ({ setValueTab }) {
@@ -30,36 +32,32 @@ export default function TaskSubPage ({ setValueTab }) {
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    if (taskUserData && courseUserData) {
-
-      const taskCounts = taskUserData["hydra:member"].reduce((counts, task) => {
-        console.log(task)
-        const isDone = task?.isDone;
+    if (courseUserData) {
+      const taskCounts = taskUserData?.["hydra:member"].reduce((counts, task) => {
+        const isDone = task?.mark;
         const taskId = task.task.split("/").pop();
 
         if (!counts[taskId]) {
           counts[taskId] = { done: 0, all: 0 };
         }
 
-        if (isDone) {
+        if (isDone !== null) {
           counts[taskId].done += 1;
         }
         return counts;
       }, {});
 
-      taskCounts.all =  courseUserData["hydra:member"].reduce((counter,item)=>{
-        if(item.course ===`/api/courses/${id}`&&!item.isCreator){
-          counter+=1
+      taskCounts.all = courseUserData["hydra:member"].reduce((counter, item) => {
+        if (item.course === `/api/courses/${id}` && !item.isCreator) {
+          counter += 1;
         }
         return counter;
-      },0)
+      }, 0);
 
       setTaskStatistic(taskCounts);
     }
 
-
-
-  }, [taskUserData]);
+  }, [taskUserData, courseUserData]);
 
   useEffect(() => {
     setValueTab("2");
@@ -78,7 +76,11 @@ export default function TaskSubPage ({ setValueTab }) {
         >
           Create
         </Button>
-        {taskData?.map(({ name, createdAt, id, dueDate }) => {
+        {taskData?.slice()?.sort((a, b) => {
+          const dateA = new Date(a?.dueDate?.date);
+          const dateB = new Date(b?.dueDate?.date);
+          return dateB - dateA;
+        })?.map(({ name, createdAt, id, dueDate }) => {
           return <Accordion className={s.accordion} key={name}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -86,13 +88,23 @@ export default function TaskSubPage ({ setValueTab }) {
               id="panel1-header"
               className={s.accordionSummary}
             >
-              <Typography variant="subtitle1" className={s.name}>
-                {name}
-              </Typography>
-              <Typography variant="overline" className={s.date}>
-                {createdAt?.date.split(".")[0]}
-              </Typography>
+              <Box className={s.accordionSummaryContent}>
+                <Box className={s.iconNameBoxWrapper}>
+                  <Avatar sx={{ bgcolor: deepOrange[500] }}>
+                    <AssignmentIcon />
+                  </Avatar>
+                  <Typography variant="subtitle1" className={s.name}>
+                    {name}
+                  </Typography>
+                </Box>
+
+                <Typography variant="overline" className={s.date}>
+                  {createdAt?.date.split(".")[0]}
+                </Typography>
+              </Box>
+
             </AccordionSummary>
+
             <AccordionDetails className={s.accordionDetails}>
               <Box>
                 <Typography>
@@ -105,7 +117,7 @@ export default function TaskSubPage ({ setValueTab }) {
                   <Typography variant="title1">Submitted</Typography>
                 </div>
                 <div>
-                  <Typography className={s.countAppointedTasks} variant="h4">{taskStatistic[id] ? taskStatistic[id]?.all : 0}</Typography>
+                  <Typography className={s.countAppointedTasks} variant="h4">{taskStatistic?.all ? taskStatistic?.all : 0}</Typography>
                   <Typography variant="title1">Appointed</Typography>
                 </div>
               </Box>
@@ -114,6 +126,6 @@ export default function TaskSubPage ({ setValueTab }) {
         })}
       </CardContent>
     </Card>}
-    <CreateTaskDialog openDialog={openDialog} setOpenDialog={setOpenDialog} courseId = {id}/>
+    <CreateTaskDialog openDialog={openDialog} setOpenDialog={setOpenDialog} courseId={id} />
   </>;
 }
