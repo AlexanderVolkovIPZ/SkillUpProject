@@ -26,10 +26,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import LinkIcon from "@mui/icons-material/Link";
 import FolderIcon from "@mui/icons-material/Folder";
 import NotesIcon from "@mui/icons-material/Notes";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import CancelScheduleSendIcon from "@mui/icons-material/CancelScheduleSend";
 import { deepOrange } from "@mui/material/colors";
 import s from "./TaskPage.module.css";
+import DeleteTaskDialog from "../../../../components/deleteTaskDialog/user/DeleteTaskDialog";
 
 export default function TaskPage () {
   const { taskId } = useParams();
@@ -199,15 +199,7 @@ export default function TaskPage () {
                 ) : (
                   <>
                     <UpdateTaskDialog />
-                    <Button
-                      fullWidth
-                      variant="outlined"
-                      endIcon={<DeleteForeverIcon />}
-                      component={Link}
-                      to="delete"
-                    >
-                      Delete task
-                    </Button>
+                    <DeleteTaskDialog taskId={taskData?.id} courseId={taskData?.course?.split("/").pop()} />
                   </>
                 )}
               </Box>
