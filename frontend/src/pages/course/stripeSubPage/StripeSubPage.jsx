@@ -141,7 +141,11 @@ export default function StripeSubPage ({ setValueTab }) {
             </Box>
             <Box className={s.rightSide}>
               <List component="nav" aria-label="main mailbox folders" className={s.listTask}>
-                {taskData?.map(({ name, createdAt, id }, index) => {
+                {taskData?.slice()?.sort((a, b) => {
+                  const dateA = new Date(a?.dueDate?.date);
+                  const dateB = new Date(b?.dueDate?.date);
+                  return dateB - dateA;
+                })?.map(({ name, createdAt, id }, index) => {
                   return <TaskItem
                     name={name}
                     createdAt={createdAt}
