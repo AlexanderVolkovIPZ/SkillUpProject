@@ -1,0 +1,17 @@
+.contentBox {
+    padding: 15px;
+}
+
+.dialogHeaderTaskUpdate {
+
+}
+
+.taskUpdateSuccessfullyAlert {
+    position: absolute;
+    z-index: 4;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
