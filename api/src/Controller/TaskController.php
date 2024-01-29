@@ -7,6 +7,7 @@ use App\Entity\Task;
 use App\Repository\TaskRepository;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -98,6 +99,48 @@ class TaskController extends AbstractController
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $name);
 
         return $response;
+    }
+
+    #[Route("/api/task-update/{id}", name: "task_update", methods: ["POST"])]
+    public function taskUpdate(string $id, Request $request): JsonResponse
+    {
+        $name = $request->get("name");
+        $description = $request->get("description");
+        $mark = $request->get("mark");
+        $date = $request->get("date");
+        $uploadedFiles = $request->files->all();
+        if (!$name || !($mark == 0 || $mark)) {
+            throw new InvalidArgumentException('Missing required data. Please provide course, name, and mark.');
+        }
+        $task = $this->taskRepository->find($id);
+        $task->setName($name);
+        $task->setDescription($description);
+        $task->setMaxMark($mark);
+        $dueDate = DateTimeImmutable::createFromFormat(DateTimeInterface::ISO8601, $date);
+        $dueDate ? $task->setDueDate($dueDate) : $task->setDueDate(null);
+
+        $destination = $this->getParameter('upload_directory');
+        $filePath = $destination . '/' . $task->getFileNameTask();
+
+        if ($uploadedFiles) {
+            if (file_exists($filePath) && !is_dir($filePath)) {
+                unlink($filePath);
+            }
+            foreach ($uploadedFiles as $uploadedFile) {
+                $newFileName = md5(uniqid()) . '.' . $uploadedFile->guessExtension();
+                $task->setFileNameTask($newFileName);
+                $uploadedFile->move($destination, $newFileName);
+            }
+        } else {
+            if (file_exists($filePath) && !is_dir($filePath)) {
+                unlink($filePath);
+                $task->setFileNameTask(null);
+            }
+        }
+
+        $this->entityManager->flush();
+
+        return new JsonResponse("Task updated successfully", Response::HTTP_OK);
     }
 
 }

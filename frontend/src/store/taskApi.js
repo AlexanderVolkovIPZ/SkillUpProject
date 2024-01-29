@@ -18,7 +18,7 @@ export const taskApi = createApi({
       query: (id) => ({
         url: `/tasks-by-course/${id}`,
         method: "get"
-      })
+      }), providesTags: ["Post"]
     }),
     create: builder.mutation({
       query: (body) => {
@@ -27,15 +27,32 @@ export const taskApi = createApi({
           method: "post",
           body
         };
-      }
+      }, invalidatesTags: ["Post"]
     }),
     getTask: builder.query({
       query: (id) => ({
         url: `/tasks/${id}`,
         method: "get"
-      })
+      }), providesTags: ["Post"]
     }),
+    updateTask: builder.mutation({
+      query: ({ id, body }) => {
+        return {
+          url: `/task-update/${id}`,
+          method: "post",
+          body
+        };
+      },
+      invalidatesTags: ["Post"]
+    })
+
   })
 });
 
-export const { useGetTasksByCourseQuery, useCreateMutation, useGetTaskQuery, useGetTaskFileQuery} = taskApi;
+export const {
+  useGetTasksByCourseQuery,
+  useCreateMutation,
+  useGetTaskQuery,
+  useGetTaskFileQuery,
+  useUpdateTaskMutation
+} = taskApi;
