@@ -143,4 +143,21 @@ class TaskController extends AbstractController
         return new JsonResponse("Task updated successfully", Response::HTTP_OK);
     }
 
+    #[Route("/api/task-delete/{id}", name: "task_delete", methods: ["DELETE"])]
+    public function taskDelete(string $id): JsonResponse
+    {
+        $task = $this->taskRepository->find($id);
+
+        if ($task->getFileNameTask()) {
+            $filePath = $this->getParameter('upload_directory') . "/" . $task->getFileNameTask();
+            if (file_exists($filePath) && !is_dir($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
+        return new JsonResponse("Task delete successfully", Response::HTTP_NO_CONTENT);
+    }
+
 }
