@@ -1,0 +1,15 @@
+.tableBox {
+    border: 1px solid black;
+}
+
+.contentBox {
+    max-width: 1400px;
+}
+
+.successfullyUpdatedMark {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+}
