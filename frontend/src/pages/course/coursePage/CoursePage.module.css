@@ -1,11 +1,10 @@
-.tabBox{
+.tabBox {
     border-bottom: 1px solid lightgray;
 }
 
-.contentBox{
-    max-width: 1000px;
+.contentBox {
     margin: 10px auto 0;
 }
 
-.coursePageWrapper{
+.coursePageWrapper {
 }

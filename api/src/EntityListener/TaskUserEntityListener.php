@@ -19,10 +19,4 @@ class TaskUserEntityListener
         $taskUser->setDate($currentDateTime);
     }
 
-    public function preUpdate(TaskUser $taskUser, LifecycleEventArgs $lifecycleEventArgs)
-    {
-        $currentDateTime = new DateTime();
-        $taskUser->setDate($currentDateTime);
-    }
-
 }

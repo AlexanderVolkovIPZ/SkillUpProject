@@ -16,10 +16,31 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TaskUserRepository extends ServiceEntityRepository
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TaskUser::class);
     }
+
+    public function getTaskUsersByCourseId($courseId): array
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+
+        $qb->select('u.firstName', 'u.lastName', 'u.email', 't.name', 'tu.date', 't.dueDate', 'tu.solvedTaskFileName', 'tu.linkSolvedTask', 'tu.mark', 'tu.id')
+            ->from('App\Entity\TaskUser', 'tu')
+            ->leftJoin('App\Entity\Task', 't', 'WITH', 't.id = tu.task')
+            ->leftJoin('App\Entity\User', 'u', 'WITH', 'u.id = tu.user')
+            ->where('t.course = :courseId')
+            ->setParameter('courseId', $courseId);
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+
+
 
 //    /**
 //     * @return TaskUser[] Returns an array of TaskUser objects

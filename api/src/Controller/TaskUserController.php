@@ -7,18 +7,20 @@ use App\Entity\TaskUser;
 use App\Entity\User;
 use App\Repository\TaskUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use InvalidArgumentException;
 use RuntimeException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
-use function PHPUnit\Framework\isEmpty;
 
 class TaskUserController extends AbstractController
 {
+
     private TaskUserRepository $taskUserRepository;
     private EntityManagerInterface $entityManager;
 
@@ -29,7 +31,8 @@ class TaskUserController extends AbstractController
     }
 
     #[Route("/api/task-user-create", name: "task_user_create", methods: ["POST"])]
-    public function taskUserCreate(Request $request){
+    public function taskUserCreate(Request $request)
+    {
 
         $taskId = $request->get("task");
         $task = $this->entityManager->getRepository(Task::class)->find($taskId);
@@ -38,7 +41,7 @@ class TaskUserController extends AbstractController
         $link = $request->get("link");
         $uploadedFiles = $request->files->all();
 
-        if(!$task || !$user || (!$link && !$uploadedFiles)){
+        if (!$task || !$user || (!$link && !$uploadedFiles)) {
             throw new InvalidArgumentException('Missing required data. Please provide task, user, and link or file!');
         }
 
@@ -46,7 +49,7 @@ class TaskUserController extends AbstractController
         $taskUser->setUser($user);
         $taskUser->setTask($task);
 
-        if(!empty($link)){
+        if (!empty($link)) {
             $taskUser->setLinkSolvedTask($link);
         }
 
@@ -89,4 +92,29 @@ class TaskUserController extends AbstractController
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
+
+
+    #[Route("/api/task-users-by-course/{id}", name: "task_users_by_course", methods: ["GET"])]
+    public function taskUsersByCourse(string $id)
+    {
+        $taskUsers = $this->taskUserRepository->getTaskUsersByCourseId($id);
+
+        return new JsonResponse($taskUsers, Response::HTTP_OK);
+    }
+
+    #[Route("/api/task-user-file/{name}", name: "task_user_file_by_name", methods: ["GET"])]
+    public function taskUserFileByName(string $name): BinaryFileResponse
+    {
+        $filePath = $this->getParameter('upload_directory') . '/' . $name;
+
+        if (!file_exists($filePath)) {
+            throw new FileNotFoundException($name);
+        }
+
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $name);
+
+        return $response;
+    }
+
 }

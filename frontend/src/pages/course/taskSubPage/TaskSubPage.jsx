@@ -28,11 +28,11 @@ export default function TaskSubPage ({ setValueTab }) {
   const { data: taskUserData, isLoading: isLoadingUserData } = useGetTaskUserQuery();
   const { data: courseUserData, isLoading: isLoadingCourseUserData } = useGetCourseUsersQuery();
 
-  const [taskStatistic, setTaskStatistic] = useState({});
+  const [taskStatistic, setTaskStatistic] = useState({ all: 0 });
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    if (courseUserData) {
+    if (courseUserData && taskUserData) {
       const taskCounts = taskUserData?.["hydra:member"].reduce((counts, task) => {
         const isDone = task?.mark;
         const taskId = task.task.split("/").pop();
