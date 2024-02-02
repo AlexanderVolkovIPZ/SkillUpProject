@@ -34,6 +34,11 @@ use Symfony\Component\Uid\UuidV6;
             "denormalization_context" => ["groups" => ["put:item:taskUser"]],
             "normalization_context"   => ["groups" => ["get:item:taskUser"]],
         ],
+        "patch"  => [
+            "method"                  => "PATCH",
+            "denormalization_context" => ["groups" => ["patch:item:taskUser"]],
+            "normalization_context"   => ["groups" => ["get:item:taskUser"]],
+        ],
         "delete" => [
             "method" => "DELETE",
         ]
@@ -52,6 +57,7 @@ class TaskUser implements JsonSerializable
     #[Groups([
         "post:collection:taskUser",
         "put:item:taskUser",
+        "patch:item:taskUser",
         "get:collection:taskUser",
         "get:item:taskUser",
     ])]
@@ -61,6 +67,7 @@ class TaskUser implements JsonSerializable
     #[Groups([
         "post:collection:taskUser",
         "put:item:taskUser",
+        "patch:item:taskUser",
         "get:collection:taskUser",
         "get:item:taskUser",
     ])]
@@ -69,6 +76,7 @@ class TaskUser implements JsonSerializable
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Groups([
         "put:item:taskUser",
+        "patch:item:taskUser",
         "get:collection:taskUser",
         "get:item:taskUser",
     ])]
@@ -85,6 +93,7 @@ class TaskUser implements JsonSerializable
     #[Groups([
         "post:collection:taskUser",
         "put:item:taskUser",
+        "patch:item:taskUser",
         "get:collection:taskUser",
         "get:item:taskUser",
     ])]
@@ -94,6 +103,7 @@ class TaskUser implements JsonSerializable
     #[Groups([
         "post:collection:taskUser",
         "put:item:taskUser",
+        "patch:item:taskUser",
         "get:collection:taskUser",
         "get:item:taskUser",
     ])]
