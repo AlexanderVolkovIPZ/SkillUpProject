@@ -28,19 +28,25 @@ security:
   access_control:
     - { path: ^/api/docs,  roles: PUBLIC_ACCESS }
     - { path: ^/api/login, roles: PUBLIC_ACCESS }
-    - { path: ^/api/user,  roles: PUBLIC_ACCESS }
-    - { path: ^/api/users/.*$,  roles: PUBLIC_ACCESS }
-    - { path: ^/api/tasks,  roles: PUBLIC_ACCESS }
-    - { path: ^/api/tasks/.*$,  roles: PUBLIC_ACCESS }
-    - { path: ^/api/courses/.*$,  roles: PUBLIC_ACCESS }
-    - { path: ^/api/task-create,  roles: PUBLIC_ACCESS }
-    - { path: ^/api/tasks-by-course/.*$,  roles: PUBLIC_ACCESS }
-    - { path: ^/api/task_users,  roles: PUBLIC_ACCESS }
     - { path: ^/api/registration, roles: PUBLIC_ACCESS }
-    - { path: ^/api/task-user-create, roles: PUBLIC_ACCESS }
     - { path: ^/api/confirm-registration/.*$, roles: PUBLIC_ACCESS }
-    - { path: ^/api/task-user-delete/.*$, roles: PUBLIC_ACCESS }
-    - { path: ^/api/task-file/.*$, roles: PUBLIC_ACCESS }
     - { path: ^/api/user-courses,       roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api/user-course/.*$,       roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/tasks-by-course/.*$,  roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/task-create,  roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/task-file/.*$, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/task-update/.*$, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/task-delete/.*$, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/task-user-create, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/task-user-delete/.*$, roles: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api/task-user-file/.*$, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+
+    #- { path: ^/api/user,  roles: PUBLIC_ACCESS }
+    #- { path: ^/api/users/.*$,  roles: PUBLIC_ACCESS }
+    #- { path: ^/api/tasks,  roles: PUBLIC_ACCESS }
+    #- { path: ^/api/tasks/.*$,  roles: PUBLIC_ACCESS }
+    #- { path: ^/api/courses/.*$,  roles: PUBLIC_ACCESS }
+    #- { path: ^/api/task_users,  roles: PUBLIC_ACCESS }
+
+
