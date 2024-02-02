@@ -19,7 +19,7 @@ export const taskUserApi = createApi({
         url: `/task_users`,
         method: "get"
       }),
-      providesTags: ["Post"]
+      providesTags: ["Post", "Patch"]
     }),
     createTaskUser: builder.mutation({
       query: (body) => {
@@ -39,9 +39,34 @@ export const taskUserApi = createApi({
         };
       },
       invalidatesTags: ["Post"]
+    }),
+    getTaskUsersByCourseId: builder.query({
+      query: (id) => ({
+        url: `/task-users-by-course/${id}`,
+        method: "get"
+      }),
+      providesTags: ["Post", "Patch"]
+    }),
+    updateTaskUser: builder.mutation({
+      query: ({ id, ...newData }) => {
+        return {
+          url: `/task-users/${id}`,
+          method: "patch",
+          headers: {
+            "Content-Type": "application/merge-patch+json"
+          },
+          body: newData
+        };
+      },
+      invalidatesTags: ["Patch"]
     })
-
   })
 });
 
-export const { useGetTaskUserQuery, useCreateTaskUserMutation, useDeleteTaskUserMutation } = taskUserApi;
+export const {
+  useGetTaskUserQuery,
+  useCreateTaskUserMutation,
+  useDeleteTaskUserMutation,
+  useGetTaskUsersByCourseIdQuery,
+  useUpdateTaskUserMutation
+} = taskUserApi;
