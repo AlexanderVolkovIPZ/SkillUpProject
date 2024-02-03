@@ -18,7 +18,8 @@ export const courseApi = createApi({
       query: () => ({
         url: `/user-courses`,
         method: "get"
-      })
+      }),
+      providesTags: ["Post"]
     }),
     create: builder.mutation({
       query: (body) => {
@@ -27,26 +28,39 @@ export const courseApi = createApi({
           method: "post",
           body
         };
-      }
+      },
+      invalidatesTags: ["Post"]
+    }),
+    connectCourse: builder.mutation({
+      query: ({ code, body }) => {
+        return {
+          url: `/course-connect/${code}`,
+          method: "post",
+          body
+        };
+      },
+      invalidatesTags: ["Post"]
     }),
     course: builder.query({
       query: (id) => ({
         url: `/courses/${id}`,
         method: "get"
-      })
+      }),
+      providesTags: ["Post"]
     }),
     userCourseByCode: builder.query({
       query: (code) => ({
         url: `/user-course/${code}`,
         method: "get"
-      })
+      }),
+      providesTags: ["Post"]
     }),
     updateCourse: builder.mutation({
       query: ({ id, ...newData }) => ({
         url: `/courses/${id}`, // Assuming your API endpoint supports updating by ID
         method: "put",
         body: newData
-      })
+      }),
     }),
     isCurrentUserCourseCreator: builder.query({
       query: (id) => ({
@@ -63,5 +77,6 @@ export const {
   useUserCourseByCodeQuery,
   useCourseQuery,
   useUpdateCourseMutation,
-  useIsCurrentUserCourseCreatorQuery
+  useIsCurrentUserCourseCreatorQuery,
+  useConnectCourseMutation
 } = courseApi;
