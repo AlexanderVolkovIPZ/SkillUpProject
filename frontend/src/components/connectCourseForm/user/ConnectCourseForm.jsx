@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../../context/authContext";
 import { useCreateMutation } from "../../../store/courseUserApi";
+import { useConnectCourseMutation } from "../../../store/courseApi";
 
 import { connectCourseSchema } from "../../../schemesValidation/connectCourseSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,23 +11,31 @@ import CircularProgressModal from "../../circularProgressModal/CircularProgressM
 import { Button, TextField } from "@mui/material";
 import s from "./ConnectCourseForm.module.css";
 
-export default function ConnectCourseForm () {
+export default function ConnectCourseForm ({ setIsCourseSuccessfullyConnected }) {
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm({
     resolver: zodResolver(connectCourseSchema)
   });
   const [createUserCourse] = useCreateMutation();
+  const [connectCourse, { isError }] = useConnectCourseMutation();
   const { userInfo } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await createUserCourse({
-        user: `/api/users/${userInfo.id}`,
-        course: `/api/courses/${data?.name}`,
-        isCreator: false
+      await connectCourse({
+        code: data?.name,
+        body: []
       });
-      reset();
+      console.log(isError);
+      if (!isError) {
+        setIsCourseSuccessfullyConnected(true);
+        reset();
+        setTimeout(() => {
+          setIsCourseSuccessfullyConnected(false);
+        }, 3000);
+      }
+
     } catch (error) {
       console.log(error);
     } finally {
