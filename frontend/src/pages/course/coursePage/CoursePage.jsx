@@ -6,6 +6,8 @@ import UserSubPage from "../userSubPage/UserSubPage";
 import MarkSubPage from "../marksSubPage/MarkSubPage";
 import { Box, Tab, Tabs } from "@mui/material";
 import s from "./CoursePage.module.css";
+import WithCourseOwnershipCheckRoutes from "../../../components/HOC/WithCourseOwnershipCheckRoutes";
+import WithCourseOwnershipCheck from "../../../components/HOC/WithCourseOwnershipCheck";
 
 export default function CoursePage () {
   const { id } = useParams();
@@ -14,6 +16,7 @@ export default function CoursePage () {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return <div className={s.coursePageWrapper}>
     <Box sx={{ width: "100%" }} className={s.tabBox}>
       <Tabs
@@ -24,19 +27,23 @@ export default function CoursePage () {
         aria-label="primary tabs"
       >
         <Tab value="1" label="Stripe" component={Link} to={`/course/${id}`} />
-        <Tab value="2" label="Tasks" component={Link} to={`/course/${id}/tasks`} />
-        <Tab value="3" label="Users" component={Link} to={`/course/${id}/users`} />
-        <Tab value="4" label="Marks" component={Link} to={`/course/${id}/marks`} />
+        <WithCourseOwnershipCheck>
+          <Tab value="2" label="Tasks" component={Link} to={`/course/${id}/tasks`} />
+          <Tab value="3" label="Users" component={Link} to={`/course/${id}/users`} />
+          <Tab value="4" label="Marks" component={Link} to={`/course/${id}/marks`} />
+        </WithCourseOwnershipCheck>
       </Tabs>
     </Box>
     <div className={s.contentBox}>
       <Routes path={`/courses/${id}`}>
-        <Route index element={<StripeSubPage setValueTab={setValue}/>} />
-        <Route path={"tasks"} element={<TaskSubPage setValueTab={setValue}/>} />
-        <Route path={"users"} element={<UserSubPage setValueTab={setValue}/>} />
-        <Route path={"marks"} element={<MarkSubPage setValueTab={setValue}/>} />
+        <Route index element={<StripeSubPage setValueTab={setValue} />} />
+        <Route path={""} element={<WithCourseOwnershipCheckRoutes />}>
+          <Route path={"tasks"} element={<TaskSubPage setValueTab={setValue} />} />
+          <Route path={"users"} element={<UserSubPage setValueTab={setValue} />} />
+          <Route path={"marks"} element={<MarkSubPage setValueTab={setValue} />} />
+        </Route>
       </Routes>
     </div>
-  </div>;
+  </div>
 }
 
