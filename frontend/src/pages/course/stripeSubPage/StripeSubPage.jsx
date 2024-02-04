@@ -24,6 +24,7 @@ import CircularProgressModal from "../../../components/circularProgressModal/Cir
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { ContentCopy } from "@mui/icons-material";
 import s from "./StripeSubPage.module.css";
+import WithCourseOwnershipCheck from "../../../components/HOC/WithCourseOwnershipCheck";
 
 export default function StripeSubPage ({ setValueTab }) {
   const { id } = useParams();
@@ -81,64 +82,68 @@ export default function StripeSubPage ({ setValueTab }) {
             className={s.cardMedia}
           />
           <CardContent className={s.cardContent}>
-            <Box className={s.leftSide}>
-              <div className={s.leftSideTop}>
-                <Typography variant="subtitle1">
-                  Course code
-                </Typography>
-                <div className={s.menu}>
-                  <IconButton
-                    aria-label="more"
-                    id="long-button"
-                    aria-controls={open ? "long-menu" : undefined}
-                    aria-expanded={open ? "true" : undefined}
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                      "aria-labelledby": "basic-button"
-                    }}
-                  >
-                    <MenuItem
-                      onClick={
-                        () => {
-                          handleClose();
-                          onCopy();
-                        }
-                      }
+            
+            <WithCourseOwnershipCheck>
+              <Box className={s.leftSide}>
+                <div className={s.leftSideTop}>
+                  <Typography variant="subtitle1">
+                    Course code
+                  </Typography>
+                  <div className={s.menu}>
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={open ? "long-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
                     >
-                      <ListItemIcon>
-                        <ContentCopy fontSize="small" />
-                      </ListItemIcon>
-                      <ListItemText>Copy course code</ListItemText>
-                    </MenuItem>
-                    <MenuItem
-                      onClick={
-                        () => {
-                          handleClose();
-                          onRegenerate();
-                        }
-                      }
+                      <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button"
+                      }}
                     >
-                      <ListItemIcon>
-                        <ReplayIcon fontSize="small" />
-                      </ListItemIcon>
-                      <ListItemText>Regenerate</ListItemText>
-                    </MenuItem>
-                  </Menu>
+                      <MenuItem
+                        onClick={
+                          () => {
+                            handleClose();
+                            onCopy();
+                          }
+                        }
+                      >
+                        <ListItemIcon>
+                          <ContentCopy fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Copy course code</ListItemText>
+                      </MenuItem>
+                      <MenuItem
+                        onClick={
+                          () => {
+                            handleClose();
+                            onRegenerate();
+                          }
+                        }
+                      >
+                        <ListItemIcon>
+                          <ReplayIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText>Regenerate</ListItemText>
+                      </MenuItem>
+                    </Menu>
+                  </div>
                 </div>
-              </div>
-              <Typography className={s.leftSideBottom}>
-                {courseData?.code}
-              </Typography>
-            </Box>
+                <Typography className={s.leftSideBottom}>
+                  {courseData?.code}
+                </Typography>
+              </Box>
+            </WithCourseOwnershipCheck>
+
             <Box className={s.rightSide}>
               <List component="nav" aria-label="main mailbox folders" className={s.listTask}>
                 {taskData?.slice()?.sort((a, b) => {
