@@ -21,13 +21,12 @@ export default function ConnectCourseForm ({ setIsCourseSuccessfullyConnected })
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
-    setLoading(true);
     try {
       await connectCourse({
         code: data?.name,
         body: []
       });
-      console.log(isError);
+
       if (!isError) {
         setIsCourseSuccessfullyConnected(true);
         reset();
@@ -38,8 +37,6 @@ export default function ConnectCourseForm ({ setIsCourseSuccessfullyConnected })
 
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 

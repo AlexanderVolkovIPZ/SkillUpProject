@@ -14,7 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthContext } from "../../../context/authContext";
 import CircularProgressModal from "../../circularProgressModal/CircularProgressModal";
 
-export default function CreateCourseForm () {
+export default function CreateCourseForm ({ setIsCourseSuccessfullyCreated }) {
   const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm({
     resolver: zodResolver(createCourseSchema)
   });
@@ -43,14 +43,20 @@ export default function CreateCourseForm () {
           course: `/api/courses/${courseId}`,
           isCreator: true
         });
+        if (!isError) {
+          setIsCourseSuccessfullyCreated(true);
+          reset();
+          editor?.setData("");
+          setCharacterCount(0);
+          setTimeout(() => {
+            setIsCourseSuccessfullyCreated(false);
+          }, 3000);
+        }
       } catch (e) {
         console.error("Error submitting form:", error);
       } finally {
         setLoading(false);
       }
-      reset();
-      editor?.setData("");
-      setCharacterCount(0)
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {

@@ -2,3 +2,15 @@
     padding: 15px;
 }
 
+.taskCreatedSuccessfullyAlert {
+    position: absolute;
+    z-index: 20;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.appBar{
+    position: relative;
+    z-index: 2;
+}

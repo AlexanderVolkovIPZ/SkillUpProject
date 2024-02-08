@@ -10,7 +10,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import s from "./CreateTaskForm.module.css";
 
-export default function CreateTaskForm ({ courseId, setLoading }) {
+export default function CreateTaskForm ({ courseId, setLoading, setIsTaskSuccessfullyCreated }) {
   const [characterCount, setCharacterCount] = useState(0);
   const [editor, setEditor] = useState(null);
   const [create, { data, isSuccess, isError, error }] = useCreateMutation();
@@ -31,9 +31,16 @@ export default function CreateTaskForm ({ courseId, setLoading }) {
       formData.append("description", data.description);
       formData.append("date", data.date);
       await create(formData);
-      reset();
-      editor?.setData("");
-      setCharacterCount(0);
+
+      if (!isError) {
+        setIsTaskSuccessfullyCreated(true);
+        reset();
+        editor?.setData("");
+        setCharacterCount(0);
+        setTimeout(() => {
+          setIsTaskSuccessfullyCreated(false);
+        }, 3000);
+      }
     } catch (error) {
       console.log(error);
     } finally {
