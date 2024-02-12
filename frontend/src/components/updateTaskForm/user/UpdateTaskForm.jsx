@@ -137,7 +137,7 @@ export default function UpdateTaskForm ({ setIsUpdateDataSuccessfully }) {
       {...register("file")}
     />
     <label htmlFor="raised-button-file">
-      <Button variant="contained" color={"success"} component="span">
+      <Button variant="contained" color={"primary"} component="span">
         Upload task file
       </Button>
     </label>
