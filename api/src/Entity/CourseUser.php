@@ -50,6 +50,10 @@ class CourseUser implements JsonSerializable
 
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
+    #[Groups([
+        "get:collection:courseUser",
+        "get:item:courseUser",
+    ])]
     private ?string $id = null;
 
     #[ORM\Column]
