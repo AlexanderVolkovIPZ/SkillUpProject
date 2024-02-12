@@ -54,7 +54,7 @@ export default function Header () {
               variant="h6"
               sx={{ flexGrow: 1 }}
             >
-              GUEST
+              SkillUp
             </Typography>
             {signIn && signUp ? <>
               <Button component={Link} to={"login"} color="inherit">
