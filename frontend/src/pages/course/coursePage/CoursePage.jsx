@@ -44,6 +44,6 @@ export default function CoursePage () {
         </Route>
       </Routes>
     </div>
-  </div>
+  </div>;
 }
 

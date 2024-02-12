@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import MarkTable from "../../../components/markTable/user/MarkTable";
 import { Alert } from "@mui/material";
+import Box from "@mui/material/Box";
 import CheckIcon from "@mui/icons-material/Check";
 import s from "./MarkSubPage.module.css";
 
@@ -12,7 +13,7 @@ export default function MarkSubPage ({ setValueTab }) {
     setValueTab("4");
   }, []);
 
-  return <>
+  return <Box>
     <Helmet>
       <title>MarkSubPage</title>
     </Helmet>
@@ -21,5 +22,5 @@ export default function MarkSubPage ({ setValueTab }) {
         Mark update successfully.
       </Alert>}
     <MarkTable setIsSuccessfulUpdateMark={setIsSuccessfulUpdateMark} />
-  </>;
+  </Box>;
 }

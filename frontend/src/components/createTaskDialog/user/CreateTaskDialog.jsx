@@ -1,10 +1,10 @@
 import { forwardRef, useState } from "react";
 import CreateTaskForm from "../../createTaskForm/user/CreateTaskForm";
 import CircularProgressModal from "../../circularProgressModal/CircularProgressModal";
-import { Alert, AppBar, Box, Button, Dialog, IconButton, Slide, Toolbar, Typography } from "@mui/material";
+import { Alert, AppBar, Box, Dialog, IconButton, Slide, Toolbar, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import s from "./CreateTaskDialog.module.css";
 import CheckIcon from "@mui/icons-material/Check";
+import s from "./CreateTaskDialog.module.css";
 
 const Transition = forwardRef(function Transition (props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -13,11 +13,10 @@ const Transition = forwardRef(function Transition (props, ref) {
 export default function CreateTaskDialog ({ openDialog, setOpenDialog, courseId }) {
   const [loading, setLoading] = useState(false);
   const [isTaskSuccessfullyCreated, setIsTaskSuccessfullyCreated] = useState(false);
+
   const handleClose = () => {
     setOpenDialog(false);
   };
-
-  console.log(isTaskSuccessfullyCreated)
 
   return <>
     {loading ? <CircularProgressModal /> : null}
