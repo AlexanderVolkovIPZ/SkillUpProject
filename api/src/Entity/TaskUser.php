@@ -51,6 +51,10 @@ class TaskUser implements JsonSerializable
 
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
+    #[Groups([
+        "get:collection:taskUser",
+        "get:item:taskUser",
+    ])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
