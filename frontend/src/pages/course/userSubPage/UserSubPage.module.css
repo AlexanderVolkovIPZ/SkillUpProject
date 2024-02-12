@@ -1,0 +1,23 @@
+.contentWrapper {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+
+.listItem {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    border-radius: 10px;
+    transition: background-color 0.2s ease-in;
+}
+
+.listItem:hover {
+    background-color: rgba(25, 118, 210, 0.08);
+}
+
+.userDeleteSuccessfullyAlert {
+    position: absolute;
+    z-index: 4;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
