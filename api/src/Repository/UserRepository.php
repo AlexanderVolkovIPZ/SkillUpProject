@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -38,6 +39,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
+    }
+
+    public function findUserInfoByCourseId(string $courseId): array
+    {
+        $entityManager = $this->getEntityManager();
+        $qb = $entityManager->createQueryBuilder();
+
+        $qb->select('u.firstName', 'u.lastName','u.email', 'tu.id as taskUserId', 'cu.id as courseUserId')
+            ->from('App\Entity\User', 'u')
+            ->leftJoin('App\Entity\CourseUser', 'cu', 'WITH', 'u.id = cu.user')
+            ->leftJoin('App\Entity\TaskUser', 'tu', 'WITH', 'u.id = tu.user')
+            ->where('cu.course = :courseId AND cu.isCreator = :isCreator')
+            ->setParameters(['courseId' => $courseId, 'isCreator' => 0]);
+
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
     }
 
 //    /**
