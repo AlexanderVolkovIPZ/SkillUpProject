@@ -6,7 +6,7 @@ export const courseUserApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -29,7 +29,16 @@ export const courseUserApi = createApi({
         method: "get"
       })
     }),
+    deleteCourseUser: builder.mutation({
+      query: (id) => {
+        return {
+          url: `/course_users/${id}`,
+          method: "delete"
+        };
+      }
+    })
+
   })
 });
 
-export const { useCreateMutation, useGetCourseUsersQuery } = courseUserApi;
+export const { useCreateMutation, useGetCourseUsersQuery, useDeleteCourseUserMutation } = courseUserApi;

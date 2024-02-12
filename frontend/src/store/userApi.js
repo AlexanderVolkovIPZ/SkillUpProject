@@ -39,8 +39,14 @@ export const userApi = createApi({
           body
         };
       }
+    }),
+    getUserInfoByCourse: builder.query({
+      query: (id) => ({
+        url: `/user-info-by-course/${id}`,
+        method: "get"
+      })
     })
   })
 });
 
-export const { useLoginMutation, useRegisterUserMutation, useLogoutMutation } = userApi;
+export const { useLoginMutation, useRegisterUserMutation, useLogoutMutation, useGetUserInfoByCourseQuery } = userApi;
