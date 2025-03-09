@@ -8,15 +8,21 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class TaskUserEntityListener
 {
-
+    /**
+     * TaskUserEntityListener constructor
+     */
     public function __construct()
     {
     }
 
-    public function prePersist(TaskUser $taskUser, LifecycleEventArgs $lifecycleEventArgs)
+    /**
+     * @param TaskUser $taskUser
+     * @param LifecycleEventArgs $lifecycleEventArgs
+     * @return void
+     */
+    public function prePersist(TaskUser $taskUser, LifecycleEventArgs $lifecycleEventArgs):void
     {
         $currentDateTime = new DateTime();
         $taskUser->setDate($currentDateTime);
     }
-
 }

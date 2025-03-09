@@ -27,7 +27,7 @@ class LoginChecker implements UserCheckerInterface
      * @param UserInterface $user
      * @return void
      */
-    public function checkPostAuth(UserInterface $user)
+    public function checkPostAuth(UserInterface $user):void
     {
         // TODO: Implement checkPostAuth() method.
     }

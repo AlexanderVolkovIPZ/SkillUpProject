@@ -177,5 +177,4 @@ class CourseUser implements JsonSerializable
             "isCreator" => $this->getIsCreator(),
         ];
     }
-
 }

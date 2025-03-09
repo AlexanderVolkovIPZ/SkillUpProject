@@ -21,16 +21,23 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TaskController extends AbstractController
 {
-
     private TaskRepository $taskRepository;
     private EntityManagerInterface $entityManager;
 
+    /**
+     * @param TaskRepository $taskRepository
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(TaskRepository $taskRepository, EntityManagerInterface $entityManager)
     {
         $this->taskRepository = $taskRepository;
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
     #[Route("/api/tasks-by-course/{id}", name: "tasks_by_course", methods: ["GET"])]
     public function coursesByUserID(string $id): JsonResponse
     {
@@ -41,6 +48,10 @@ class TaskController extends AbstractController
         return new JsonResponse($tasks);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route("/api/task-create", name: "task_create", methods: ["POST"])]
     public function taskCreate(Request $request): JsonResponse
     {
@@ -86,6 +97,10 @@ class TaskController extends AbstractController
         return new JsonResponse("Task created successfully", Response::HTTP_OK);
     }
 
+    /**
+     * @param string $name
+     * @return BinaryFileResponse
+     */
     #[Route("/api/task-file/{name}", name: "task_file_by_name", methods: ["GET"])]
     public function taskFileByName(string $name): BinaryFileResponse
     {
@@ -101,6 +116,11 @@ class TaskController extends AbstractController
         return $response;
     }
 
+    /**
+     * @param string $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route("/api/task-update/{id}", name: "task_update", methods: ["POST"])]
     public function taskUpdate(string $id, Request $request): JsonResponse
     {
@@ -112,6 +132,7 @@ class TaskController extends AbstractController
         if (!$name || !($mark == 0 || $mark)) {
             throw new InvalidArgumentException('Missing required data. Please provide course, name, and mark.');
         }
+
         $task = $this->taskRepository->find($id);
         $task->setName($name);
         $task->setDescription($description);
@@ -126,6 +147,7 @@ class TaskController extends AbstractController
             if (file_exists($filePath) && !is_dir($filePath)) {
                 unlink($filePath);
             }
+
             foreach ($uploadedFiles as $uploadedFile) {
                 $newFileName = md5(uniqid()) . '.' . $uploadedFile->guessExtension();
                 $task->setFileNameTask($newFileName);
@@ -143,6 +165,10 @@ class TaskController extends AbstractController
         return new JsonResponse("Task updated successfully", Response::HTTP_OK);
     }
 
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
     #[Route("/api/task-delete/{id}", name: "task_delete", methods: ["DELETE"])]
     public function taskDelete(string $id): JsonResponse
     {
@@ -157,7 +183,7 @@ class TaskController extends AbstractController
 
         $this->entityManager->remove($task);
         $this->entityManager->flush();
+
         return new JsonResponse("Task delete successfully", Response::HTTP_NO_CONTENT);
     }
-
 }

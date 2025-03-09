@@ -14,18 +14,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-
     private UserRepository $userRepository;
 
+    /**
+     * @param UserRepository $userRepository
+     */
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
     #[Route("/api/user-info-by-course/{id}", name: "user_info_by_course", methods: ["GET"])]
     public function userInfoByCourse(string $id): JsonResponse
     {
-
         $userInfo = $this->userRepository->findUserInfoByCourseId($id);
 
         return new JsonResponse($userInfo);
