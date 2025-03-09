@@ -83,6 +83,9 @@ class CourseUser implements JsonSerializable
     ])]
     private ?Course $course = null;
 
+    /**
+     * CourseUser constructor
+     */
     public function __construct()
     {
         $uuid = UuidV6::v6();
@@ -90,21 +93,35 @@ class CourseUser implements JsonSerializable
         $this->isCreator = false;
     }
 
+    /**
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
+    /**
+     * @param string|null $id
+     * @return void
+     */
     public function setId(?string $id): void
     {
         $this->id = $id;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsCreator(): ?bool
     {
         return $this->isCreator;
     }
 
+    /**
+     * @param bool $isCreator
+     * @return $this
+     */
     public function setIsCreator(bool $isCreator): self
     {
         $this->isCreator = $isCreator;
@@ -112,11 +129,18 @@ class CourseUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -124,11 +148,18 @@ class CourseUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return Course|null
+     */
     public function getCourse(): ?Course
     {
         return $this->course;
     }
 
+    /**
+     * @param Course|null $course
+     * @return $this
+     */
     public function setCourse(?Course $course): self
     {
         $this->course = $course;
@@ -136,6 +167,9 @@ class CourseUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [
