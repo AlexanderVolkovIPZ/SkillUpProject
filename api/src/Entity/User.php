@@ -67,9 +67,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     #[Groups([
         "post:collection:user",
@@ -109,6 +106,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     #[OneToMany(mappedBy: 'user', targetEntity: TaskUser::class)]
     private Collection $taskUsers;
 
+    /**
+     * User constructor
+     */
     public function __construct()
     {
         $uuid = UuidV6::v6();
@@ -119,16 +119,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         $this->taskUsers = new ArrayCollection();
     }
 
+    /**
+     * @return ?string
+     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
+    /**
+     * @return ?string
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return self
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -136,16 +146,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getUserIdentifier(): string
     {
         return (string)$this->email;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -153,11 +173,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -165,17 +192,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return void
+     */
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
+    /**
+     * @param string $firstName
+     * @return $this
+     */
     public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
@@ -183,11 +220,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
+    /**
+     * @param string $lastName
+     * @return $this
+     */
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
@@ -195,11 +239,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsConfirmed(): ?bool
     {
         return $this->isConfirmed;
     }
 
+    /**
+     * @param bool $isConfirmed
+     * @return $this
+     */
     public function setIsConfirmed(bool $isConfirmed): self
     {
         $this->isConfirmed = $isConfirmed;
@@ -207,11 +258,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getRegistrationToken(): ?string
     {
         return $this->registrationToken;
     }
 
+    /**
+     * @param string|null $registrationToken
+     * @return $this
+     */
     public function setRegistrationToken(?string $registrationToken): self
     {
         $this->registrationToken = $registrationToken;
@@ -219,11 +277,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return Collection
+     */
     public function getCourseUsers(): Collection
     {
         return $this->courseUsers;
     }
 
+    /**
+     * @param Collection $courseUsers
+     * @return $this
+     */
     public function setCourseUsers(Collection $courseUsers): self
     {
         $this->courseUsers = $courseUsers;
@@ -231,11 +296,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return Collection
+     */
     public function getTaskUsers(): Collection
     {
         return $this->taskUsers;
     }
 
+    /**
+     * @param Collection $taskUsers
+     * @return $this
+     */
     public function setTaskUsers(Collection $taskUsers): self
     {
         $this->taskUsers = $taskUsers;
@@ -243,6 +315,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [

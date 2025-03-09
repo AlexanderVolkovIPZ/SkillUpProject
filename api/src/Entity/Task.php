@@ -45,7 +45,6 @@ use ApiPlatform\Core\Annotation\ApiResource;
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task implements JsonSerializable
 {
-
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
     #[Groups([
@@ -118,6 +117,9 @@ class Task implements JsonSerializable
     ])]
     private ?Course $course = null;
 
+    /**
+     * Task constructor
+     */
     public function __construct()
     {
         $uuid = UuidV6::v6();
@@ -127,11 +129,18 @@ class Task implements JsonSerializable
         $this->maxMark = 0;
     }
 
+    /**
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
+    /**
+     * @param string|null $id
+     * @return $this
+     */
     public function setId(?string $id): self
     {
         $this->id = $id;
@@ -139,11 +148,18 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -151,11 +167,18 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string|null $description
+     * @return $this
+     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -163,11 +186,18 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFileNameTask(): ?string
     {
         return $this->fileNameTask;
     }
 
+    /**
+     * @param string|null $fileNameTask
+     * @return $this
+     */
     public function setFileNameTask(?string $fileNameTask): self
     {
         $this->fileNameTask = $fileNameTask;
@@ -175,11 +205,18 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
+    /**
+     * @param DateTimeInterface $createdAt
+     * @return $this
+     */
     public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
@@ -187,11 +224,18 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getDueDate(): ?DateTimeInterface
     {
         return $this->dueDate;
     }
 
+    /**
+     * @param DateTimeInterface|null $dueDate
+     * @return $this
+     */
     public function setDueDate(?DateTimeInterface $dueDate): self
     {
         $this->dueDate = $dueDate;
@@ -199,11 +243,18 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return Collection
+     */
     public function getTaskUsers(): Collection
     {
         return $this->taskUsers;
     }
 
+    /**
+     * @param Collection $taskUsers
+     * @return $this
+     */
     public function setTaskUsers(Collection $taskUsers): self
     {
         $this->taskUsers = $taskUsers;
@@ -211,11 +262,18 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getMaxMark(): ?string
     {
         return $this->maxMark;
     }
 
+    /**
+     * @param string $maxMark
+     * @return $this
+     */
     public function setMaxMark(string $maxMark): self
     {
         $this->maxMark = $maxMark;
@@ -223,11 +281,18 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return Course|null
+     */
     public function getCourse(): ?Course
     {
         return $this->course;
     }
 
+    /**
+     * @param Course|null $course
+     * @return $this
+     */
     public function setCourse(?Course $course): self
     {
         $this->course = $course;
@@ -235,6 +300,9 @@ class Task implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [
@@ -247,5 +315,4 @@ class Task implements JsonSerializable
             "dueDate"      => $this->getDueDate()
         ];
     }
-
 }

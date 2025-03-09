@@ -113,6 +113,9 @@ class TaskUser implements JsonSerializable
     ])]
     private ?Task $task = null;
 
+    /**
+     * TaskUser constructor
+     */
     public function __construct()
     {
         $uuid = UuidV6::v6();
@@ -120,11 +123,18 @@ class TaskUser implements JsonSerializable
         $this->mark = null;
     }
 
+    /**
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
+    /**
+     * @param string|null $id
+     * @return $this
+     */
     public function setId(?string $id): self
     {
         $this->id = $id;
@@ -132,11 +142,18 @@ class TaskUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSolvedTaskFileName(): ?string
     {
         return $this->solvedTaskFileName;
     }
 
+    /**
+     * @param string|null $solvedTaskFileName
+     * @return $this
+     */
     public function setSolvedTaskFileName(?string $solvedTaskFileName): self
     {
         $this->solvedTaskFileName = $solvedTaskFileName;
@@ -144,11 +161,18 @@ class TaskUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLinkSolvedTask(): ?string
     {
         return $this->linkSolvedTask;
     }
 
+    /**
+     * @param string|null $linkSolvedTask
+     * @return $this
+     */
     public function setLinkSolvedTask(?string $linkSolvedTask): self
     {
         $this->linkSolvedTask = $linkSolvedTask;
@@ -156,11 +180,18 @@ class TaskUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getMark(): ?string
     {
         return $this->mark;
     }
 
+    /**
+     * @param string $mark
+     * @return $this
+     */
     public function setMark(string $mark): self
     {
         $this->mark = $mark;
@@ -168,11 +199,18 @@ class TaskUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return Task|null
+     */
     public function getTask(): ?Task
     {
         return $this->task;
     }
 
+    /**
+     * @param Task|null $task
+     * @return $this
+     */
     public function setTask(?Task $task): self
     {
         $this->task = $task;
@@ -180,11 +218,18 @@ class TaskUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -192,11 +237,18 @@ class TaskUser implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface|null
+     */
     public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
+    /**
+     * @param DateTimeInterface $date
+     * @return $this
+     */
     public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
@@ -204,7 +256,9 @@ class TaskUser implements JsonSerializable
         return $this;
     }
 
-
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [
