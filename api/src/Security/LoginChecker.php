@@ -9,7 +9,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class LoginChecker implements UserCheckerInterface
 {
-
     /**
      * @param UserInterface $user
      * @return true
@@ -31,5 +30,4 @@ class LoginChecker implements UserCheckerInterface
     {
         // TODO: Implement checkPostAuth() method.
     }
-
 }

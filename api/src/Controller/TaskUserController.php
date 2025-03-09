@@ -20,7 +20,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskUserController extends AbstractController
 {
+    /**
+     * @var TaskUserRepository
+     */
     private TaskUserRepository $taskUserRepository;
+
+    /**
+     * @var EntityManagerInterface
+     */
     private EntityManagerInterface $entityManager;
 
     /**

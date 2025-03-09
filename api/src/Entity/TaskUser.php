@@ -48,7 +48,9 @@ use Symfony\Component\Uid\UuidV6;
 #[ORM\Entity(repositoryClass: TaskUserRepository::class)]
 class TaskUser implements JsonSerializable
 {
-
+    /**
+     * @var string|null
+     */
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
     #[Groups([
@@ -57,6 +59,9 @@ class TaskUser implements JsonSerializable
     ])]
     private ?string $id = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         "post:collection:taskUser",
@@ -67,6 +72,9 @@ class TaskUser implements JsonSerializable
     ])]
     private ?string $solvedTaskFileName = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         "post:collection:taskUser",
@@ -77,6 +85,9 @@ class TaskUser implements JsonSerializable
     ])]
     private ?string $linkSolvedTask = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2, nullable: true)]
     #[Groups([
         "put:item:taskUser",
@@ -86,6 +97,9 @@ class TaskUser implements JsonSerializable
     ])]
     private ?string $mark = null;
 
+    /**
+     * @var DateTimeInterface|null
+     */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups([
         "get:collection:taskUser",
@@ -93,6 +107,9 @@ class TaskUser implements JsonSerializable
     ])]
     private ?DateTimeInterface $date = null;
 
+    /**
+     * @var User|null
+     */
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "taskUsers")]
     #[Groups([
         "post:collection:taskUser",
@@ -103,6 +120,9 @@ class TaskUser implements JsonSerializable
     ])]
     private ?User $user = null;
 
+    /**
+     * @var Task|null
+     */
     #[ORM\ManyToOne(targetEntity: Task::class, inversedBy: "taskUsers")]
     #[Groups([
         "post:collection:taskUser",

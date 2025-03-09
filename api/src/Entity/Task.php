@@ -45,6 +45,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task implements JsonSerializable
 {
+    /**
+     * @var string|null
+     */
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
     #[Groups([
@@ -53,6 +56,9 @@ class Task implements JsonSerializable
     ])]
     private ?string $id = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255)]
     #[Groups([
         "post:collection:task",
@@ -62,6 +68,9 @@ class Task implements JsonSerializable
     ])]
     private ?string $name = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups([
         "post:collection:task",
@@ -71,6 +80,9 @@ class Task implements JsonSerializable
     ])]
     private ?string $description = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         "post:collection:task",
@@ -80,6 +92,9 @@ class Task implements JsonSerializable
     ])]
     private ?string $fileNameTask = null;
 
+    /**
+     * @var string|int|null
+     */
     #[ORM\Column(type: Types::DECIMAL, precision: 5, scale: 2)]
     #[Groups([
         "post:collection:task",
@@ -89,6 +104,9 @@ class Task implements JsonSerializable
     ])]
     private ?string $maxMark = null;
 
+    /**
+     * @var DateTimeInterface|DateTime|null
+     */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups([
         "get:collection:task",
@@ -96,6 +114,9 @@ class Task implements JsonSerializable
     ])]
     private ?DateTimeInterface $createdAt = null;
 
+    /**
+     * @var DateTimeInterface|null
+     */
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups([
         "post:collection:task",
@@ -105,9 +126,15 @@ class Task implements JsonSerializable
     ])]
     private ?DateTimeInterface $dueDate = null;
 
+    /**
+     * @var Collection|ArrayCollection
+     */
     #[OneToMany(mappedBy: 'task', targetEntity: TaskUser::class)]
     private Collection $taskUsers;
 
+    /**
+     * @var Course|null
+     */
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: "tasks")]
     #[Groups([
         "post:collection:task",

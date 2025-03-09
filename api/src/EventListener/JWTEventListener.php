@@ -11,6 +11,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class JWTEventListener
 {
+    /**
+     * @var TokenStorageInterface
+     */
     private TokenStorageInterface $tokenStorage;
 
     /**

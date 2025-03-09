@@ -47,14 +47,25 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSerializable
 {
-
+    /**
+     * @const string
+     */
     const ROLE_USER  = "ROLE_USER";
+    /**
+     * @const string
+     */
     const ROLE_ADMIN = "ROLE_ADMIN";
 
+    /**
+     * @var string|null
+     */
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
     private ?string $id = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 180, unique: true)]
     #[Groups([
         "get:collection:user",
@@ -64,9 +75,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     ])]
     private ?string $email = null;
 
+    /**
+     * @var string[]
+     */
     #[ORM\Column]
     private array $roles = [];
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column]
     #[Groups([
         "post:collection:user",
@@ -74,6 +91,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     ])]
     private ?string $password = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255)]
     #[Groups([
         "post:collection:user",
@@ -84,6 +104,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     ])]
     private ?string $firstName = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255)]
     #[Groups([
         "post:collection:user",
@@ -94,15 +117,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     ])]
     private ?string $lastName = null;
 
+    /**
+     * @var bool|null
+     */
     #[ORM\Column]
     private ?bool $isConfirmed = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $registrationToken = null;
 
+    /**
+     * @var Collection|ArrayCollection
+     */
     #[OneToMany(mappedBy: 'user', targetEntity: CourseUser::class)]
     private Collection $courseUsers;
 
+    /**
+     * @var Collection|ArrayCollection
+     */
     #[OneToMany(mappedBy: 'user', targetEntity: TaskUser::class)]
     private Collection $taskUsers;
 
