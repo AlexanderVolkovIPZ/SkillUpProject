@@ -20,18 +20,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TaskUserController extends AbstractController
 {
-
     private TaskUserRepository $taskUserRepository;
     private EntityManagerInterface $entityManager;
 
+    /**
+     * @param TaskUserRepository $taskUserRepository
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(TaskUserRepository $taskUserRepository, EntityManagerInterface $entityManager)
     {
         $this->taskUserRepository = $taskUserRepository;
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     #[Route("/api/task-user-create", name: "task_user_create", methods: ["POST"])]
-    public function taskUserCreate(Request $request)
+    public function taskUserCreate(Request $request): JsonResponse
     {
 
         $taskId = $request->get("task");
@@ -68,8 +75,12 @@ class TaskUserController extends AbstractController
         return new JsonResponse("TaskUser created successfully", Response::HTTP_OK);
     }
 
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
     #[Route("/api/task-user-delete/{id}", name: "task_user_delete", methods: ["DELETE"])]
-    public function taskUserDelete(string $id)
+    public function taskUserDelete(string $id):JsonResponse
     {
         $task = $this->taskUserRepository->find($id);
 
@@ -94,14 +105,22 @@ class TaskUserController extends AbstractController
     }
 
 
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
     #[Route("/api/task-users-by-course/{id}", name: "task_users_by_course", methods: ["GET"])]
-    public function taskUsersByCourse(string $id)
+    public function taskUsersByCourse(string $id):JsonResponse
     {
         $taskUsers = $this->taskUserRepository->getTaskUsersByCourseId($id);
 
         return new JsonResponse($taskUsers, Response::HTTP_OK);
     }
 
+    /**
+     * @param string $name
+     * @return BinaryFileResponse
+     */
     #[Route("/api/task-user-file/{name}", name: "task_user_file_by_name", methods: ["GET"])]
     public function taskUserFileByName(string $name): BinaryFileResponse
     {
@@ -116,5 +135,4 @@ class TaskUserController extends AbstractController
 
         return $response;
     }
-
 }

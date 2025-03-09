@@ -11,10 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegistrationController extends AbstractController
 {
     public const ROLE_USER    = "ROLE_USER";
-
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $entityManager;
 
     /**
@@ -46,5 +42,4 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/confirmation.html.twig');
     }
-
 }

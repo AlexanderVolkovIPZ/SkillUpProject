@@ -268,5 +268,4 @@ class TaskUser implements JsonSerializable
             "mark"               => $this->getMark()
         ];
     }
-
 }

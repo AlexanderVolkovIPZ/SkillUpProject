@@ -328,5 +328,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
             "isConfirmed" => $this->getIsConfirmed()
         ];
     }
-
 }

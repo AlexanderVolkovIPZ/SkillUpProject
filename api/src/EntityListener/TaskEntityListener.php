@@ -8,16 +8,22 @@ use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class TaskEntityListener
 {
-
+    /**
+     * TaskEntityListener constructor
+     */
     public function __construct()
     {
     }
 
-    public function prePersist(Task $task, LifecycleEventArgs $lifecycleEventArgs)
+    /**
+     * @param Task $task
+     * @param LifecycleEventArgs $lifecycleEventArgs
+     * @return void
+     */
+    public function prePersist(Task $task, LifecycleEventArgs $lifecycleEventArgs):void
     {
         $currentDateTime = new DateTime();
 
         $task->setCreatedAt($currentDateTime);
     }
-
 }

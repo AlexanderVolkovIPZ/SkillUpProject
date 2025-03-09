@@ -12,16 +12,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UserEntityListener
 {
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
     private UserPasswordHasherInterface $passwordHasher;
-
     private EntityManagerInterface $entityManager;
     private UrlGeneratorInterface $urlGenerator;
 
-
+    /**
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param EntityManagerInterface $entityManager
+     * @param UrlGeneratorInterface $urlGenerator
+     */
     public function __construct(UserPasswordHasherInterface $passwordHasher,
                                 EntityManagerInterface      $entityManager,
                                 UrlGeneratorInterface       $urlGenerator)
@@ -31,7 +30,12 @@ class UserEntityListener
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function prePersist(User $user, LifecycleEventArgs $lifecycleEventArgs)
+    /**
+     * @param User $user
+     * @param LifecycleEventArgs $lifecycleEventArgs
+     * @return void
+     */
+    public function prePersist(User $user, LifecycleEventArgs $lifecycleEventArgs):void
     {
         if ($user->getPassword()) {
             $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
@@ -39,6 +43,12 @@ class UserEntityListener
         }
     }
 
+    /**
+     * @param User $user
+     * @param LifecycleEventArgs $eventArgs
+     * @return void
+     * @throws \Random\RandomException
+     */
     public function postPersist(User $user, LifecycleEventArgs $eventArgs): void
     {
         $email = $user->getEmail();
@@ -55,6 +65,11 @@ class UserEntityListener
         $this->sendConfirmationEmail($email, $confirmationUrl);
     }
 
+    /**
+     * @param $recipient
+     * @param $confirmationUrl
+     * @return void
+     */
     private function sendConfirmationEmail($recipient, $confirmationUrl): void
     {
         $subject = 'Confirmation of registration';
@@ -79,6 +94,19 @@ class UserEntityListener
         }
     }
 
+    /**
+     * @param string $host
+     * @param string $smtpSecure
+     * @param int $port
+     * @param string $username
+     * @param string $password
+     * @param string $recipient
+     * @param string $subject
+     * @param string $body
+     * @param bool $smtpAuth
+     * @param bool $isHtml
+     * @return PHPMailer
+     */
     private function createMailer(string $host,
                                   string $smtpSecure,
                                   int    $port,
@@ -112,9 +140,12 @@ class UserEntityListener
         }
     }
 
+    /**
+     * @return string
+     * @throws \Random\RandomException
+     */
     private function generateUniqueToken(): string
     {
         return bin2hex(random_bytes(32));
     }
-
 }

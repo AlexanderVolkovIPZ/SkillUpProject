@@ -13,11 +13,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CourseController extends AbstractController
 {
-
     private CourseRepository $courseRepository;
     private CourseUserRepository $courseUserRepository;
     private EntityManagerInterface $entityManager;
 
+    /**
+     * @param CourseRepository $courseRepository
+     * @param CourseUserRepository $courseUserRepository
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(CourseRepository $courseRepository, CourseUserRepository $courseUserRepository, EntityManagerInterface $entityManager)
     {
         $this->courseRepository = $courseRepository;
@@ -25,6 +29,9 @@ class CourseController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @return JsonResponse
+     */
     #[Route("/api/user-courses", name: "courses_by_user", methods: ["GET"])]
     public function coursesByUserID(): JsonResponse
     {
@@ -35,6 +42,10 @@ class CourseController extends AbstractController
         return new JsonResponse($courses);
     }
 
+    /**
+     * @param $code
+     * @return JsonResponse
+     */
     #[Route("/api/course-connect/{code}", name: "courses_connect_by_code", methods: ["POST"])]
     public function coursesConnectByCode($code): JsonResponse
     {
@@ -68,6 +79,10 @@ class CourseController extends AbstractController
         return new JsonResponse(['message' => 'User successfully connected to the course'], Response::HTTP_OK);
     }
 
+    /**
+     * @param string $code
+     * @return JsonResponse
+     */
     #[Route("/api/user-course/{code}", name: "course_by_code", methods: ["GET"])]
     public function coursesByCode(string $code): JsonResponse
     {
@@ -78,6 +93,10 @@ class CourseController extends AbstractController
         return new JsonResponse($course->jsonSerialize());
     }
 
+    /**
+     * @param string $id
+     * @return JsonResponse
+     */
     #[Route("/api/user-course-creator/{id}", name: "is_course_creator_by_id_course", methods: ["GET"])]
     public function isUserCourseCreator(string $id): JsonResponse
     {
