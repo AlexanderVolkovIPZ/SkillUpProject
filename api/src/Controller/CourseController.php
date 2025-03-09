@@ -13,8 +13,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CourseController extends AbstractController
 {
+    /**
+     * @var CourseRepository
+     */
     private CourseRepository $courseRepository;
+
+    /**
+     * @var CourseUserRepository
+     */
     private CourseUserRepository $courseUserRepository;
+
+    /**
+     * @var EntityManagerInterface
+     */
     private EntityManagerInterface $entityManager;
 
     /**

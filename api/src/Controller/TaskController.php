@@ -21,7 +21,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TaskController extends AbstractController
 {
+    /**
+     * @var TaskRepository
+     */
     private TaskRepository $taskRepository;
+
+    /**
+     * @var EntityManagerInterface
+     */
     private EntityManagerInterface $entityManager;
 
     /**

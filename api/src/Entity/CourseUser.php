@@ -47,7 +47,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: CourseUserRepository::class)]
 class CourseUser implements JsonSerializable
 {
-
+    /**
+     * @var string|null
+     */
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
     #[Groups([
@@ -56,6 +58,9 @@ class CourseUser implements JsonSerializable
     ])]
     private ?string $id = null;
 
+    /**
+     * @var bool|null
+     */
     #[ORM\Column]
     #[Groups([
         "post:collection:courseUser",
@@ -65,6 +70,9 @@ class CourseUser implements JsonSerializable
     ])]
     private ?bool $isCreator = null;
 
+    /**
+     * @var User|null
+     */
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "courseUsers")]
     #[Groups([
         "post:collection:courseUser",
@@ -74,6 +82,9 @@ class CourseUser implements JsonSerializable
     ])]
     private ?User $user = null;
 
+    /**
+     * @var Course|null
+     */
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: "courseUsers")]
     #[Groups([
         "post:collection:courseUser",

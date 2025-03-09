@@ -14,6 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
+    /**
+     * @var UserRepository
+     */
     private UserRepository $userRepository;
 
     /**

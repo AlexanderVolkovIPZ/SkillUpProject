@@ -45,6 +45,9 @@ use Symfony\Component\Uid\UuidV6;
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 class Course implements JsonSerializable
 {
+    /**
+     * @var string|null
+     */
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
     #[Groups([
@@ -55,6 +58,9 @@ class Course implements JsonSerializable
     ])]
     private ?string $id = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255)]
     #[Groups([
         "post:collection:course",
@@ -64,6 +70,9 @@ class Course implements JsonSerializable
     ])]
     private ?string $name = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         "post:collection:course",
@@ -73,6 +82,9 @@ class Course implements JsonSerializable
     ])]
     private ?string $title = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups([
         "post:collection:course",
@@ -82,6 +94,9 @@ class Course implements JsonSerializable
     ])]
     private ?string $description = null;
 
+    /**
+     * @var string|null
+     */
     #[ORM\Column(length: 255)]
     #[Groups([
         "put:item:course",
@@ -90,9 +105,15 @@ class Course implements JsonSerializable
     ])]
     private ?string $code = null;
 
+    /**
+     * @var Collection|ArrayCollection
+     */
     #[OneToMany(mappedBy: 'course', targetEntity: CourseUser::class)]
     private Collection $courseUsers;
 
+    /**
+     * @var Collection|ArrayCollection
+     */
     #[OneToMany(mappedBy: 'course', targetEntity: Task::class)]
     private Collection $tasks;
 
