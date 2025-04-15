@@ -124,5 +124,4 @@ class CourseController extends AbstractController
 
         return new JsonResponse(["isUserCourseCreator" => false]);
     }
-
 }
