@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\EntityListener\CourseEntityListener;
 use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,10 +40,19 @@ use Symfony\Component\Uid\UuidV6;
             "normalization_context"   => ["groups" => ["get:item:course"]],
         ],
         "delete" => [
-            "method" => "DELETE",
+            'method'   => 'DELETE',
         ]
     ],
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    "name"         => "partial",
+    "title"        => "partial",
+    "description"  => "partial",
+    "code"         => 'exact'
+])]
+#[ApiFilter(RangeFilter::class, properties: [
+    'createdAt',
+])]
 #[ORM\EntityListeners([CourseEntityListener::class])]
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
 class Course implements JsonSerializable
@@ -118,14 +130,26 @@ class Course implements JsonSerializable
     private Collection $tasks;
 
     /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: CourseCategory::class, cascade: ['persist', 'remove'])]
+    private Collection $courseCategories;
+
+    /**
+     * @var Collection
+     */
+    #[OneToMany(mappedBy: 'course', targetEntity: Comment::class)]
+    private Collection $comments;
+
+    /**
      * Course constructor
      */
     public function __construct()
     {
-        $uuid = UuidV6::v6();
-        $this->id = $uuid->toRfc4122();
+        $this->id = UuidV6::v6()->toRfc4122();
         $this->courseUsers = new ArrayCollection();
         $this->tasks = new ArrayCollection();
+        $this->courseCategories = new ArrayCollection();
     }
 
     /**
@@ -157,7 +181,7 @@ class Course implements JsonSerializable
      * @param string $name
      * @return $this
      */
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -176,7 +200,7 @@ class Course implements JsonSerializable
      * @param string|null $title
      * @return $this
      */
-    public function setTitle(?string $title): static
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
 
@@ -195,7 +219,7 @@ class Course implements JsonSerializable
      * @param string|null $description
      * @return $this
      */
-    public function setDescription(?string $description): static
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -212,11 +236,13 @@ class Course implements JsonSerializable
 
     /**
      * @param Collection $courseUsers
-     * @return void
+     * @return $this
      */
-    public function setCourseUsers(Collection $courseUsers): void
+    public function setCourseUsers(Collection $courseUsers): self
     {
         $this->courseUsers = $courseUsers;
+
+        return $this;
     }
 
     /**
@@ -229,11 +255,13 @@ class Course implements JsonSerializable
 
     /**
      * @param Collection $tasks
-     * @return void
+     * @return $this
      */
-    public function setTasks(Collection $tasks): void
+    public function setTasks(Collection $tasks): self
     {
         $this->tasks = $tasks;
+
+        return $this;
     }
 
     /**
@@ -248,9 +276,47 @@ class Course implements JsonSerializable
      * @param string $code
      * @return $this
      */
-    public function setCode(string $code): static
+    public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCourseCategories(): Collection
+    {
+        return $this->courseCategories;
+    }
+
+    /**
+     * @param Collection $courseCategories
+     * @return self
+     */
+    public function setCourseCategories(Collection $courseCategories): self
+    {
+        $this->courseCategories = $courseCategories;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Collection $comments
+     * @return $this
+     */
+    public function setComments(Collection $comments): self
+    {
+        $this->comments = $comments;
 
         return $this;
     }
