@@ -114,11 +114,13 @@ class CourseUser implements JsonSerializable
 
     /**
      * @param string|null $id
-     * @return void
+     * @return $this
      */
-    public function setId(?string $id): void
+    public function setId(?string $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
