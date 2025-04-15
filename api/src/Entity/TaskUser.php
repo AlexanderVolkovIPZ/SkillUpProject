@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\EntityListener\TaskUserEntityListener;
 use App\Repository\TaskUserRepository;
 use DateTimeInterface;
@@ -44,6 +47,14 @@ use Symfony\Component\Uid\UuidV6;
         ]
     ],
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    "solvedTaskFileName"  => "partial",
+    "linkSolvedTask"      => "partial",
+])]
+#[ApiFilter(RangeFilter::class, properties: [
+    "date",
+    "mark",
+])]
 #[ORM\EntityListeners([TaskUserEntityListener::class])]
 #[ORM\Entity(repositoryClass: TaskUserRepository::class)]
 class TaskUser implements JsonSerializable
