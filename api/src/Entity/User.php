@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\EntityListener\UserEntityListener;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,19 +44,20 @@ use Doctrine\Common\Collections\Collection;
         ]
     ],
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    "email"       => "exact",
+    "firstName"   => "partial",
+    "lastName"    => "exact",
+])]
 #[ORM\EntityListeners([UserEntityListener::class])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSerializable
 {
-    /**
-     * @const string
-     */
-    const ROLE_USER  = "ROLE_USER";
-    /**
-     * @const string
-     */
-    const ROLE_ADMIN = "ROLE_ADMIN";
+
+    public const ROLE_USER  = "ROLE_USER";
+    public const ROLE_ADMIN   = "ROLE_ADMIN";
+    public const ROLE_MANAGER = "ROLE_MANAGER";
 
     /**
      * @var string|null
@@ -100,7 +103,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         "put:item:user",
         "get:collection:user",
         "get:item:user",
-        "put:item:user"
     ])]
     private ?string $firstName = null;
 
@@ -113,7 +115,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         "put:item:user",
         "get:collection:user",
         "get:item:user",
-        "put:item:user"
     ])]
     private ?string $lastName = null;
 
@@ -140,6 +141,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
      */
     #[OneToMany(mappedBy: 'user', targetEntity: TaskUser::class)]
     private Collection $taskUsers;
+
+    /**
+     * @var Collection
+     */
+    #[OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
+    private Collection $comments;
 
     /**
      * User constructor
@@ -346,6 +353,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     public function setTaskUsers(Collection $taskUsers): self
     {
         $this->taskUsers = $taskUsers;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param Collection $comments
+     * @return $this
+     */
+    public function setComments(Collection $comments): self
+    {
+        $this->comments = $comments;
 
         return $this;
     }
