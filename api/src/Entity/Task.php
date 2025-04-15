@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\TaskRepository;
 use DateTime;
 use DateTimeInterface;
@@ -42,6 +45,16 @@ use ApiPlatform\Core\Annotation\ApiResource;
         ]
     ],
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    "name"         => "partial",
+    "description"  => "partial",
+    "fileNameTask" => "partial",
+])]
+#[ApiFilter(RangeFilter::class, properties: [
+    "createdAt",
+    "maxMark",
+    "dueDate",
+])]
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task implements JsonSerializable
 {
