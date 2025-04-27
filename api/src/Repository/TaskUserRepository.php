@@ -34,4 +34,20 @@ class TaskUserRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param \DateTime $sixMonthsAgo
+     * @return int
+     */
+    public function deleteOldUnmarkedTasks(\DateTime $sixMonthsAgo): int
+    {
+        return $this->createQueryBuilder('t')
+            ->delete()
+            ->where('t.mark = :mark')
+            ->andWhere('t.date < :sixMonthsAgo')
+            ->setParameter('mark', 0)
+            ->setParameter('sixMonthsAgo', $sixMonthsAgo)
+            ->getQuery()
+            ->execute();
+    }
 }
