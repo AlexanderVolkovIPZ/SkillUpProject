@@ -93,7 +93,6 @@ class Category
     #[Groups([
         "get:collection:category",
         "get:item:category",
-        "post:collection:category",
         "put:item:category"
     ])]
     private ?\DateTimeInterface $createdAt = null;
@@ -111,6 +110,7 @@ class Category
     {
         $this->id = UuidV6::v6()->toRfc4122();
         $this->courseCategories = new ArrayCollection();
+        $this->createdAt = new \DateTime('now');
     }
 
     /**
