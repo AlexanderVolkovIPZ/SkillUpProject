@@ -142,6 +142,20 @@ class Course implements JsonSerializable
     private Collection $comments;
 
     /**
+     * @var Collection
+     */
+    #[OneToMany(mappedBy: 'course', targetEntity: Certificate::class)]
+    private Collection $certificates;
+
+
+    /**
+     * @var Collection
+     */
+    #[OneToMany(mappedBy: 'course', targetEntity: Faq::class)]
+    private Collection $faqs;
+
+
+    /**
      * Course constructor
      */
     public function __construct()
@@ -150,6 +164,8 @@ class Course implements JsonSerializable
         $this->courseUsers = new ArrayCollection();
         $this->tasks = new ArrayCollection();
         $this->courseCategories = new ArrayCollection();
+        $this->certificates = new ArrayCollection();
+        $this->faqs = new ArrayCollection();
     }
 
     /**
@@ -162,11 +178,51 @@ class Course implements JsonSerializable
 
     /**
      * @param string|null $id
-     * @return void
+     * @return $this
      */
-    public function setId(?string $id): void
+    public function setId(?string $id): self
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return Faq
+     */
+    public function getFaqs(): Faq
+    {
+        return $this->faqs;
+    }
+
+    /**
+     * @param Faq $faqs
+     * @return $this
+     */
+    public function setFaqs(Faq $faqs): self
+    {
+        $this->faqs = $faqs;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCertificates(): Collection
+    {
+        return $this->certificates;
+    }
+
+    /**
+     * @param Collection $certificates
+     * @return $this
+     */
+    public function setCertificates(Collection $certificates): self
+    {
+        $this->certificates = $certificates;
+
+        return $this;
     }
 
     /**
