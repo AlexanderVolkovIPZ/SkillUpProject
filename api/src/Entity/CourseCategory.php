@@ -86,7 +86,6 @@ class CourseCategory
      */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups([
-        "post:collection:courseCategory",
         "put:item:courseCategory",
         "get:collection:courseCategory",
         "get:item:courseCategory",
@@ -99,6 +98,7 @@ class CourseCategory
     public function __construct()
     {
         $this->id = UuidV6::v6()->toRfc4122();
+        $this->createdAt = new \DateTime('now');
     }
 
     /**
