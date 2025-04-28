@@ -59,26 +59,14 @@ class Comment
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Groups([
         "get:collection:comment",
         "get:item:comment",
         "post:collection:comment",
         "put:item:comment"
     ])]
-    private ?string $userId = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255)]
-    #[Groups([
-        "get:collection:comment",
-        "get:item:comment",
-        "post:collection:comment",
-        "put:item:comment"
-    ])]
-    private ?string $courseId = null;
+    private ?string $comment = null;
 
     /**
      * @var \DateTimeInterface|null
@@ -124,6 +112,7 @@ class Comment
     public function __construct()
     {
         $this->id = UuidV6::v6()->toRfc4122();
+        $this->createdAt = new \DateTime('now');
     }
 
     /**
@@ -132,44 +121,6 @@ class Comment
     public function getId(): ?string
     {
         return $this->id;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUserId(): ?string
-    {
-        return $this->userId;
-    }
-
-    /**
-     * @param string $userId
-     * @return $this
-     */
-    public function setUserId(string $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCourseId(): ?string
-    {
-        return $this->courseId;
-    }
-
-    /**
-     * @param string $courseId
-     * @return $this
-     */
-    public function setCourseId(string $courseId): self
-    {
-        $this->courseId = $courseId;
-
-        return $this;
     }
 
     /**
@@ -225,6 +176,25 @@ class Comment
     public function setCourse(?Course $course): self
     {
         $this->course = $course;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     * @return $this
+     */
+    public function setComment(string $comment): self
+    {
+        $this->comment = $comment;
 
         return $this;
     }
