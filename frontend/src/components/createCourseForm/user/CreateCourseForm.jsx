@@ -14,9 +14,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthContext } from "../../../context/authContext";
 import CircularProgressModal from "../../circularProgressModal/CircularProgressModal";
 
-export default function CreateCourseForm ({ setIsCourseSuccessfullyCreated }) {
-  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm({
-    resolver: zodResolver(createCourseSchema)
+export default function CreateCourseForm({ setIsCourseSuccessfullyCreated }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    reset,
+  } = useForm({
+    resolver: zodResolver(createCourseSchema),
   });
   const [create, { isSuccess, isError, error }] = useCreateMutation();
   const [createUserCourse] = useCreateUserMutation();
@@ -36,12 +42,14 @@ export default function CreateCourseForm ({ setIsCourseSuccessfullyCreated }) {
     setLoading(true);
     try {
       const response = await create(data);
-      const courseId = response?.data["@id"]?.split("/")?.pop();
+
+      const courseId = response.data.id;
+
       try {
         await createUserCourse({
           user: `/api/users/${userInfo.id}`,
           course: `/api/courses/${courseId}`,
-          isCreator: true
+          isCreator: true,
         });
         if (!isError) {
           setIsCourseSuccessfullyCreated(true);
@@ -64,58 +72,75 @@ export default function CreateCourseForm ({ setIsCourseSuccessfullyCreated }) {
     }
   };
 
-  return (<>
-    {loading ? <CircularProgressModal /> :
-      <form action="" method="get" className={s.form} onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          label="Name"
-          variant="outlined"
-          name="name"
-          inputProps={register("name")}
-          error={!!errors.name}
-          helperText={errors?.name?.message}
-          required={true}
-        />
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          label="Title"
-          variant="outlined"
-          name="title"
-          inputProps={register("title")}
-          error={!!errors.title}
-          helperText={errors?.title?.message}
-        />
-
-        <div>
-          <CKEditor
-            editor={ClassicEditor}
-            id="description"
-            name="description"
-            config={{
-              placeholder: "Description",
-              isRequired: false,
-              initialData: " "
-            }}
-            onChange={handleEditorChange}
+  return (
+    <>
+      {loading ? (
+        <CircularProgressModal />
+      ) : (
+        <form
+          action=""
+          method="get"
+          className={s.form}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <TextField
+            fullWidth
+            id="outlined-basic"
+            label="Name"
+            variant="outlined"
+            name="name"
+            inputProps={register("name")}
+            error={!!errors.name}
+            helperText={errors?.name?.message}
+            required={true}
           />
-          <div className={s.CKEditorInfo}>
-            {errors.description ? (
-              <Typography variant="caption" display="block" gutterBottom className={s.error}>
-                {errors.description.message}
-              </Typography>
-            ) : <div></div>}
-            <Typography variant="caption" display="block" gutterBottom>
-              Character Count: {characterCount}/2000
-            </Typography>
-          </div>
-        </div>
+          <TextField
+            fullWidth
+            id="outlined-basic"
+            label="Title"
+            variant="outlined"
+            name="title"
+            inputProps={register("title")}
+            error={!!errors.title}
+            helperText={errors?.title?.message}
+          />
 
-        <Button variant="contained" type="submit">
-          Create
-        </Button>
-      </form>}
-  </>);
+          <div>
+            <CKEditor
+              editor={ClassicEditor}
+              id="description"
+              name="description"
+              config={{
+                placeholder: "Description",
+                isRequired: false,
+                initialData: " ",
+              }}
+              onChange={handleEditorChange}
+            />
+            <div className={s.CKEditorInfo}>
+              {errors.description ? (
+                <Typography
+                  variant="caption"
+                  display="block"
+                  gutterBottom
+                  className={s.error}
+                >
+                  {errors.description.message}
+                </Typography>
+              ) : (
+                <div></div>
+              )}
+              <Typography variant="caption" display="block" gutterBottom>
+                Character Count: {characterCount}/2000
+              </Typography>
+            </div>
+          </div>
+
+          <Button variant="contained" type="submit">
+            Create
+          </Button>
+        </form>
+      )}
+    </>
+  );
 }

@@ -5,15 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useGetTaskQuery } from "../../../../store/taskApi";
 import { attachTaskSolutionSchema } from "../../../../schemesValidation/attachTaskSolution";
 import { AuthContext } from "../../../../context/authContext";
-import { useDeleteTaskUserMutation, useGetTaskUserQuery } from "../../../../store/taskUserApi";
+import {
+  useDeleteTaskUserMutation,
+  useGetTaskUserQuery,
+} from "../../../../store/taskUserApi";
 import { useIsCurrentUserCourseCreatorQuery } from "../../../../store/courseApi";
 import { TaskDataContext } from "../../../../context/taskDataContext";
-import {
-  Avatar,
-  Box, Button,
-  IconButton,
-  Typography
-} from "@mui/material";
+import { Avatar, Box, Button, IconButton, Typography } from "@mui/material";
 import CircularProgressModal from "../../../../components/circularProgressModal/CircularProgressModal";
 import FileViewer from "../../../../components/fileViewer/FileViewer";
 import FormAttachTask from "../../../../components/modalAttachTask/user/FormAttachTask";
@@ -31,7 +29,7 @@ import { deepOrange } from "@mui/material/colors";
 import s from "./TaskPage.module.css";
 import DeleteTaskDialog from "../../../../components/deleteTaskDialog/user/DeleteTaskDialog";
 
-export default function TaskPage () {
+export default function TaskPage() {
   const { taskId } = useParams();
   const currentUserInfo = useContext(AuthContext);
   const [status, setStatus] = useState("Appointed");
@@ -41,11 +39,10 @@ export default function TaskPage () {
   const [linkSubmitted, setLinkSubmitted] = useState(null);
   const [submittedTask, setSubmittedTask] = useState(null);
   const { data: taskData, isLoading: isLoadingTask } = useGetTaskQuery(taskId);
-  const { data: taskUserData, isLoading: isLoadingTaskUser } = useGetTaskUserQuery();
-  const {
-    data: userCreatorData,
-    isLoading: isUserCreatorData
-  } = useIsCurrentUserCourseCreatorQuery(taskData?.course?.split("/")?.pop());
+  const { data: taskUserData, isLoading: isLoadingTaskUser } =
+    useGetTaskUserQuery();
+  const { data: userCreatorData, isLoading: isUserCreatorData } =
+    useIsCurrentUserCourseCreatorQuery(taskData?.course?.split("/")?.pop());
   const [deleteTaskUser] = useDeleteTaskUserMutation();
   const {
     register,
@@ -53,15 +50,18 @@ export default function TaskPage () {
     formState: { errors },
     setValue,
     reset,
-    getValues
+    getValues,
   } = useForm({
-    resolver: zodResolver(attachTaskSolutionSchema)
+    resolver: zodResolver(attachTaskSolutionSchema),
   });
 
   useEffect(() => {
     if (taskUserData && currentUserInfo) {
-      const task = taskUserData["hydra:member"].find((item) => {
-        return item.task === `/api/tasks/${taskId}` && item.user === `/api/users/${currentUserInfo?.userInfo?.id}`;
+      const task = (taskUserData["hydra:member"] ?? []).find((item) => {
+        return (
+          item.task === `/api/tasks/${taskId}` &&
+          item.user === `/api/users/${currentUserInfo?.userInfo?.id}`
+        );
       });
 
       if (task) {
@@ -111,7 +111,7 @@ export default function TaskPage () {
       ) : (
         <TaskDataContext.Provider
           value={{
-            taskData: taskData
+            taskData: taskData,
           }}
         >
           <Box className={s.taskBox}>
@@ -121,24 +121,37 @@ export default function TaskPage () {
               </Avatar>
               <Box className={s.boxInfo}>
                 <Typography variant="h4">{taskData?.name}</Typography>
-                <Typography variant="overline" className={s.date}>{taskData?.createdAt}</Typography>
+                <Typography variant="overline" className={s.date}>
+                  {taskData?.createdAt}
+                </Typography>
                 <Divider color="warning" />
-                {taskData?.description ? <Box className={s.boxDescription}>
-                  <Box className={s.descriptionBoxIconLabel}>
-                    <NotesIcon color="primary" />
-                    <Typography variant="h5" className={s.descriptionLbl}>Description</Typography>
+                {taskData?.description ? (
+                  <Box className={s.boxDescription}>
+                    <Box className={s.descriptionBoxIconLabel}>
+                      <NotesIcon color="primary" />
+                      <Typography variant="h5" className={s.descriptionLbl}>
+                        Description
+                      </Typography>
+                    </Box>
+                    <Typography
+                      variant="body1"
+                      dangerouslySetInnerHTML={{
+                        __html: taskData?.description,
+                      }}
+                    ></Typography>
                   </Box>
-                  <Typography variant="body1" dangerouslySetInnerHTML={{ __html: taskData?.description }}></Typography>
-                </Box> : null}
-                {taskData?.fileNameTask ? <Box className={s.boxFileContent}>
-                  <Box className={s.filesBoxIconLabel}>
-                    <FolderIcon color="primary" />
-                    <Typography variant="h5">Files</Typography>
+                ) : null}
+                {taskData?.fileNameTask ? (
+                  <Box className={s.boxFileContent}>
+                    <Box className={s.filesBoxIconLabel}>
+                      <FolderIcon color="primary" />
+                      <Typography variant="h5">Files</Typography>
+                    </Box>
+                    <List>
+                      <FileViewer fileName={taskData?.fileNameTask} />
+                    </List>
                   </Box>
-                  <List>
-                    <FileViewer fileName={taskData?.fileNameTask} />
-                  </List>
-                </Box> : null}
+                ) : null}
               </Box>
             </Box>
             <Box className={s.rightSide}>
@@ -147,21 +160,31 @@ export default function TaskPage () {
                   <>
                     <Box className={s.titleAttachTask}>
                       <Typography variant="h6">Your task</Typography>
-                      <Typography variant="overline" className={s.statusLabel}>{status}</Typography>
+                      <Typography variant="overline" className={s.statusLabel}>
+                        {status}
+                      </Typography>
                     </Box>
                     {fileNameSubmitted && (
-                      <Box className={`${s.fileNameBoxAttachTask} ${s.itemTaskSubmitted}`}>
+                      <Box
+                        className={`${s.fileNameBoxAttachTask} ${s.itemTaskSubmitted}`}
+                      >
                         <Box className={s.fileNameWithIcon}>
                           <TextSnippetIcon />
-                          <Typography className={s.fileName}>{fileNameSubmitted}</Typography>
+                          <Typography className={s.fileName}>
+                            {fileNameSubmitted}
+                          </Typography>
                         </Box>
                       </Box>
                     )}
                     {linkSubmitted && (
-                      <Box className={`${s.linkBoxAttachTask} ${s.itemTaskSubmitted}`}>
+                      <Box
+                        className={`${s.linkBoxAttachTask} ${s.itemTaskSubmitted}`}
+                      >
                         <Box className={s.linkWithIcon}>
                           <LinkIcon />
-                          <Typography className={s.linkName}>{linkSubmitted}</Typography>
+                          <Typography className={s.linkName}>
+                            {linkSubmitted}
+                          </Typography>
                         </Box>
                       </Box>
                     )}
@@ -169,9 +192,15 @@ export default function TaskPage () {
                       <Box className={s.fileNameBoxAttachTask}>
                         <Box className={s.fileNameWithIcon}>
                           <TextSnippetIcon />
-                          <Typography className={s.fileName}>{fileName}</Typography>
+                          <Typography className={s.fileName}>
+                            {fileName}
+                          </Typography>
                         </Box>
-                        <IconButton aria-label="delete" size="large" onClick={handleRemoveFile}>
+                        <IconButton
+                          aria-label="delete"
+                          size="large"
+                          onClick={handleRemoveFile}
+                        >
                           <ClearIcon />
                         </IconButton>
                       </Box>
@@ -182,15 +211,30 @@ export default function TaskPage () {
                           <LinkIcon />
                           <Typography className={s.linkName}>{link}</Typography>
                         </Box>
-                        <IconButton aria-label="delete" size="large" onClick={handleRemoveLink}>
+                        <IconButton
+                          aria-label="delete"
+                          size="large"
+                          onClick={handleRemoveLink}
+                        >
                           <ClearIcon />
                         </IconButton>
                       </Box>
                     )}
-                    <FormAttachTask setFileName={setFileName} setLink={setLink} register={register} handleSubmit={handleSubmit} taskId={taskId} isSubmittedFile={fileNameSubmitted !== null} isSubmittedLink={linkSubmitted !== null} />
+                    <FormAttachTask
+                      setFileName={setFileName}
+                      setLink={setLink}
+                      register={register}
+                      handleSubmit={handleSubmit}
+                      taskId={taskId}
+                      isSubmittedFile={fileNameSubmitted !== null}
+                      isSubmittedLink={linkSubmitted !== null}
+                    />
                     {(fileNameSubmitted || linkSubmitted) && (
                       <Button
-                        fullWidth variant="outlined" endIcon={<CancelScheduleSendIcon />} onClick={handleDeleteSubmit}
+                        fullWidth
+                        variant="outlined"
+                        endIcon={<CancelScheduleSendIcon />}
+                        onClick={handleDeleteSubmit}
                       >
                         Cancel sending
                       </Button>
@@ -199,7 +243,10 @@ export default function TaskPage () {
                 ) : (
                   <>
                     <UpdateTaskDialog />
-                    <DeleteTaskDialog taskId={taskData?.id} courseId={taskData?.course?.split("/").pop()} />
+                    <DeleteTaskDialog
+                      taskId={taskData?.id}
+                      courseId={taskData?.course?.split("/").pop()}
+                    />
                   </>
                 )}
               </Box>
@@ -209,5 +256,4 @@ export default function TaskPage () {
       )}
     </>
   );
-
 }

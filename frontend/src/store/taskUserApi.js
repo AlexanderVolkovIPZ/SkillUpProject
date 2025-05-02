@@ -16,7 +16,7 @@ export const taskUserApi = createApi({
   endpoints: (builder) => ({
     getTaskUser: builder.query({
       query: () => ({
-        url: `/task_users`,
+        url: `/task-users`,
         method: "get"
       }),
       providesTags: ["Post", "Patch"]
