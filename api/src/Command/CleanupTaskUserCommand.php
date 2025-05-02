@@ -30,13 +30,12 @@ class CleanupTaskUserCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $sixMonthsAgo = (new \DateTime())->modify('-2 months');
+        $timeAgo = (new \DateTime())->modify('-2 months');
 
-        $affectedRows = $this->taskUserRepository->deleteOldUnmarkedTasks($sixMonthsAgo);
+        $affectedRows = $this->taskUserRepository->deleteOldUnmarkedTasks($timeAgo);
 
         $output->writeln("Deleted $affectedRows task_user records.");
 
         return Command::SUCCESS;
     }
 }
-

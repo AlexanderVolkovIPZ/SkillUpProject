@@ -36,17 +36,17 @@ class TaskUserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param \DateTime $sixMonthsAgo
+     * @param \DateTime $timeAgo
      * @return int
      */
-    public function deleteOldUnmarkedTasks(\DateTime $sixMonthsAgo): int
+    public function deleteOldUnmarkedTasks(\DateTime $timeAgo): int
     {
         return $this->createQueryBuilder('t')
             ->delete()
             ->where('t.mark = :mark')
-            ->andWhere('t.date < :sixMonthsAgo')
+            ->andWhere('t.date < :timeAgo')
             ->setParameter('mark', 0)
-            ->setParameter('sixMonthsAgo', $sixMonthsAgo)
+            ->setParameter('timeAgo', $timeAgo)
             ->getQuery()
             ->execute();
     }
