@@ -13,6 +13,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\UuidV6;
 use DateTime;
 
+/**
+ *
+ */
 #[ApiResource(
     collectionOperations: [
         "get"  => [
@@ -62,18 +65,6 @@ class Certificate
     private ?int $id = null;
 
     /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255)]
-    #[Groups([
-        "post:collection:certificate",
-        "put:item:certificate",
-        "get:collection:certificate",
-        "get:item:certificate",
-    ])]
-    private ?string $userId = null;
-
-    /**
      * @var \DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -95,6 +86,18 @@ class Certificate
         "get:item:certificate",
     ])]
     private ?string $certificateUrl = null;
+
+    /**
+     * @var User|null
+     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: "certificates")]
+    #[Groups([
+        "post:collection:certificate",
+        "put:item:certificate",
+        "get:collection:certificate",
+        "get:item:certificate",
+    ])]
+    private ?User $user = null;
 
     /**
      * @var Course|null
@@ -125,40 +128,22 @@ class Certificate
         return $this->id;
     }
 
+
     /**
-     * @return string|null
+     * @return User|null
      */
-    public function getUserId(): ?string
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
     /**
-     * @param string $userId
+     * @param User|null $user
      * @return $this
      */
-    public function setUserId(string $userId): self
+    public function setUser(?User $user): self
     {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCourseId(): ?string
-    {
-        return $this->courseId;
-    }
-
-    /**
-     * @param string $courseId
-     * @return $this
-     */
-    public function setCourseId(string $courseId): self
-    {
-        $this->courseId = $courseId;
+        $this->user = $user;
 
         return $this;
     }
