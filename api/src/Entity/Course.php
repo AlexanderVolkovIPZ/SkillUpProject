@@ -188,25 +188,6 @@ class Course implements JsonSerializable
     }
 
     /**
-     * @return Faq
-     */
-    public function getFaqs(): Faq
-    {
-        return $this->faqs;
-    }
-
-    /**
-     * @param Faq $faqs
-     * @return $this
-     */
-    public function setFaqs(Faq $faqs): self
-    {
-        $this->faqs = $faqs;
-
-        return $this;
-    }
-
-    /**
      * @return Collection
      */
     public function getCertificates(): Collection
