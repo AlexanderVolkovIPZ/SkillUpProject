@@ -11,34 +11,37 @@ export const courseUserApi = createApi({
         headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
-    }
+    },
   }),
   endpoints: (builder) => ({
     create: builder.mutation({
       query: (body) => {
         return {
-          url: "/course_users",
+          url: "/course-users",
           method: "post",
-          body
+          body,
         };
-      }
+      },
     }),
     getCourseUsers: builder.query({
       query: () => ({
-        url: `/course_users`,
-        method: "get"
-      })
+        url: `/course-users`,
+        method: "get",
+      }),
     }),
     deleteCourseUser: builder.mutation({
       query: (id) => {
         return {
-          url: `/course_users/${id}`,
-          method: "delete"
+          url: `/course-users/${id}`,
+          method: "delete",
         };
-      }
-    })
-
-  })
+      },
+    }),
+  }),
 });
 
-export const { useCreateMutation, useGetCourseUsersQuery, useDeleteCourseUserMutation } = courseUserApi;
+export const {
+  useCreateMutation,
+  useGetCourseUsersQuery,
+  useDeleteCourseUserMutation,
+} = courseUserApi;
