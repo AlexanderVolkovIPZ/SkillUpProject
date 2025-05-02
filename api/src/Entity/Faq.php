@@ -50,7 +50,7 @@ use Symfony\Component\Uid\UuidV6;
 class Faq
 {
     /**
-     * @var int|string|null
+     * @var string|null
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -59,7 +59,7 @@ class Faq
         "get:collection:faq",
         "get:item:faq",
     ])]
-    private ?int $id = null;
+    private ?string $id = null;
 
     /**
      * @var string|null
@@ -118,9 +118,9 @@ class Faq
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
