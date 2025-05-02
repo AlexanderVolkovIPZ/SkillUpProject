@@ -41,6 +41,7 @@ use Doctrine\Common\Collections\Collection;
         ],
         "delete" => [
             "method" => "DELETE",
+            "security" => "is_granted('" . User::ROLE_ADMIN . "')"
         ]
     ],
 )]

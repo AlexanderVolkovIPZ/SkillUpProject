@@ -36,6 +36,7 @@ use Symfony\Component\Uid\UuidV6;
         ],
         "delete" => [
             "method" => "DELETE",
+            "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_MANAGER . "')"
         ]
     ],
 )]
