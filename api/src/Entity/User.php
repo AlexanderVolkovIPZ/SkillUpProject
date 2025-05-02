@@ -143,10 +143,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     private Collection $taskUsers;
 
     /**
-     * @var Collection
+     * @var Collection|ArrayCollection
      */
     #[OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
     private Collection $comments;
+
+    /**
+     * @var Collection|ArrayCollection
+     */
+    #[OneToMany(mappedBy: 'user', targetEntity: Certificate::class)]
+    private Collection $certificates;
 
     /**
      * User constructor
@@ -159,6 +165,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
         $this->roles = [self::ROLE_USER];
         $this->courseUsers = new ArrayCollection();
         $this->taskUsers = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->certificates = new ArrayCollection();
     }
 
     /**
@@ -167,6 +175,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JsonSer
     public function getId(): ?string
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCertificates(): Collection
+    {
+        return $this->certificates;
+    }
+
+    /**
+     * @param Collection $certificates
+     * @return $this
+     */
+    public function setCertificates(Collection $certificates): self
+    {
+        $this->certificates = $certificates;
+
+        return $this;
     }
 
     /**
